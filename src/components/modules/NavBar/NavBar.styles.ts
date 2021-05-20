@@ -7,10 +7,13 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.primary.main,
     },
     menu: {
-      marginLeft: "auto",
+      display: "flex",
     },
     user: {
       marginLeft: theme.spacing(3),
+    },
+    toolbar: {
+      justifyContent: "space-between",
     },
   })
 );

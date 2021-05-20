@@ -10,6 +10,7 @@ import {
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import AddIcon from "@material-ui/icons/Add";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import SearchBar from "@Modules/SearchBar";
 import UserSettings from "@Modules/UserSettings";
 import useStyles from "./NavBar.styles";
 
@@ -17,12 +18,13 @@ const NavBar: React.FC = () => {
   const styles = useStyles();
   return (
     <AppBar position="fixed" color="transparent" className={styles.navBar}>
-      <Toolbar>
+      <Toolbar className={styles.toolbar}>
         <Button color="inherit">
           <Typography variant="h6" color="textPrimary" noWrap>
             JapanExam
           </Typography>
         </Button>
+        <SearchBar />
         <div className={styles.menu}>
           <IconButton>
             <AddIcon />
