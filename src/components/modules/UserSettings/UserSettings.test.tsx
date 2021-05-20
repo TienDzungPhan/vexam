@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import NavBar from "./NavBar";
+import UserSettings from "./UserSettings";
 
-test("renders Nav Bar", () => {
-  render(<NavBar />);
+test("renders User Settings", () => {
+  render(<UserSettings />);
   expect(false).toBe(true);
 });

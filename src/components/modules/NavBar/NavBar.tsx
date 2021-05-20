@@ -10,12 +10,13 @@ import {
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import AddIcon from "@material-ui/icons/Add";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import UserSettings from "@Modules/UserSettings";
 import useStyles from "./NavBar.styles";
 
 const NavBar: React.FC = () => {
   const styles = useStyles();
   return (
-    <AppBar className={styles.navBar} position="fixed">
+    <AppBar position="fixed" color="transparent" className={styles.navBar}>
       <Toolbar>
         <Button color="inherit">
           <Typography variant="h6" color="textPrimary" noWrap>
@@ -34,10 +35,7 @@ const NavBar: React.FC = () => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <Button color="inherit" className={styles.user}>
-            Log In
-          </Button>
-          <Button color="inherit">Sign Up</Button>
+          <UserSettings />
         </div>
       </Toolbar>
     </AppBar>

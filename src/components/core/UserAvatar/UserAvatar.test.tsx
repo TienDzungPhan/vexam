@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import NavBar from "./NavBar";
+import UserAvatar from "./UserAvatar";
 
-test("renders Nav Bar", () => {
-  render(<NavBar />);
+test("renders UserAvatar", () => {
+  render(<UserAvatar />);
   expect(false).toBe(true);
 });
