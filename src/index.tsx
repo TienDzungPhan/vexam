@@ -2,11 +2,26 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "@Modules/App";
+import {
+  createMuiTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import reportWebVitals from "./reportWebVitals";
+
+const theme = responsiveFontSizes(
+  createMuiTheme({
+    typography: {
+      fontFamily: "Grandstander",
+    },
+  })
+);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
