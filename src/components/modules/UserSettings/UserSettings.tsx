@@ -9,6 +9,7 @@ import {
   Popover,
 } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import LanguageIcon from "@material-ui/icons/Language";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import UserAvatar from "@Core/UserAvatar";
@@ -58,6 +59,12 @@ const UserSettings: React.FC = () => {
         className={styles.popover}
       >
         <List>
+          <ListItem button>
+            <ListItemIcon>
+              <AccountBoxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
+          </ListItem>
           <ListItem button>
             <ListItemIcon>
               <LanguageIcon />
