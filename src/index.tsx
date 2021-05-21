@@ -12,7 +12,7 @@ import reportWebVitals from "./reportWebVitals";
 const theme = responsiveFontSizes(
   createMuiTheme({
     typography: {
-      fontFamily: "Grandstander",
+      fontFamily: "Grandstander, cursive",
     },
   })
 );
