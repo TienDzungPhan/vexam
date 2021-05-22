@@ -72,7 +72,7 @@ const Question: React.FC<IProps> = ({ question }) => {
           {question?.description}
         </Typography>
       </CardContent>
-      <Divider className={styles.divider} />
+      <Divider variant="middle" />
       <CardContent className={styles.questionContent}>
         <Typography variant="h6" className="japanese">
           {question?.title}

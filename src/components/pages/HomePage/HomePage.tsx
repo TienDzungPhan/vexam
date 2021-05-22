@@ -1,7 +1,8 @@
 import React from "react";
 import { IQuestion } from "@Models/Question";
-import Question from "@Core/Question";
+import Question from "@Modules/Question";
 import { Grid } from "@material-ui/core";
+import Filters from "@Modules/Filters";
 
 const questions: IQuestion[] = [
   {
@@ -80,7 +81,7 @@ const HomePage: React.FC = () => {
   return (
     <Grid container spacing={2}>
       <Grid item md={4}>
-        <h1>Placeholder</h1>
+        <Filters />
       </Grid>
       <Grid item md={4}>
         {questions?.map((question) => (
