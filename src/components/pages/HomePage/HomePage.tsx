@@ -1,6 +1,6 @@
 import React from "react";
 import { IQuestion } from "@Models/Question";
-import Question from "@Core/Question";
+import Question from "@Modules/Question";
 import { Grid } from "@material-ui/core";
 
 const questions: IQuestion[] = [

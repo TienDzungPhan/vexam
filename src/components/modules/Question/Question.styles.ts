@@ -35,10 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
     actions: {
       justifyContent: "space-between",
     },
-    divider: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
     explanation: {
       marginBottom: theme.spacing(1),
     },
