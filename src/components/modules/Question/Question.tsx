@@ -18,7 +18,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
-import { timeString } from "@Helpers/time";
+import { timePast } from "@Helpers/time";
 import useStyles from "./Question.styles";
 
 interface IProps {
@@ -64,7 +64,7 @@ const Question: React.FC<IProps> = ({ question }) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={`${question?.author}・${timeString(question?.updatedAt)}`}
+        title={`${question?.author}・${timePast(question?.updatedAt)}`}
         className={styles.header}
       />
       <CardContent className={styles.description}>

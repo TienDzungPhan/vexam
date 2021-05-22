@@ -2,9 +2,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    filters: {
-      marginTop: theme.spacing(3),
-    },
+    filters: {},
     formControl: {
       display: "block",
       marginBottom: theme.spacing(3),
