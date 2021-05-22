@@ -1,5 +1,9 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
+interface IProps {
+  isDesktop: boolean;
+}
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     app: {
@@ -9,8 +13,9 @@ const useStyles = makeStyles((theme: Theme) =>
     content: {
       paddingTop: theme.spacing(12),
       paddingBottom: theme.spacing(12),
-      paddingLeft: theme.spacing(10),
-      paddingRight: theme.spacing(10),
+      paddingLeft: (props: IProps) => (props.isDesktop ? theme.spacing(10) : 0),
+      paddingRight: (props: IProps) =>
+        props.isDesktop ? theme.spacing(10) : 0,
     },
   })
 );

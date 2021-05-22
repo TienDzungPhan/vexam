@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     upperButton: {
       marginRight: theme.spacing(1),
-      maxWidth: theme.spacing(13),
+      width: theme.spacing(16),
     },
     header: {
       paddingBottom: 0,
