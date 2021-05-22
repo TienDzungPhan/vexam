@@ -1,13 +1,13 @@
-const SECOND = 1000;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-const DAY = 24 * HOUR;
-const WEEK = 7 * DAY;
+export const SECOND = 1000;
+export const MINUTE = 60 * SECOND;
+export const HOUR = 60 * MINUTE;
+export const DAY = 24 * HOUR;
+export const WEEK = 7 * DAY;
 
-type TTimeString = (origin: Date) => string;
+type TTimeString = (date: Date) => string;
+type TDaysLeft = (date: Date) => number;
 
-// eslint-disable-next-line import/prefer-default-export
-export const timeString: TTimeString = (origin: Date) => {
+export const timePast: TTimeString = (origin: Date) => {
   const now = new Date();
   const timeDiff = now.getTime() - origin.getTime();
 
@@ -20,4 +20,11 @@ export const timeString: TTimeString = (origin: Date) => {
     return `${Math.floor(timeDiff / DAY)} days`;
 
   return origin.toLocaleString();
+};
+
+export const daysLeft: TDaysLeft = (event: Date) => {
+  const now = new Date();
+  const timeDiff = event.getTime() - now.getTime();
+
+  return Math.floor(timeDiff / DAY);
 };

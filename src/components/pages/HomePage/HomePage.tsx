@@ -3,6 +3,8 @@ import { IQuestion } from "@Models/Question";
 import Question from "@Modules/Question";
 import { Grid } from "@material-ui/core";
 import Filters from "@Modules/Filters";
+import CountDown from "@Core/CountDown";
+import useStyles from "./HomePage.styles";
 
 const questions: IQuestion[] = [
   {
@@ -78,10 +80,13 @@ const questions: IQuestion[] = [
 ];
 
 const HomePage: React.FC = () => {
+  const styles = useStyles();
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={0}>
       <Grid item md={4}>
-        <Filters />
+        <div className={styles.leftSide}>
+          <Filters />
+        </div>
       </Grid>
       <Grid item md={4}>
         {questions?.map((question) => (
@@ -89,7 +94,9 @@ const HomePage: React.FC = () => {
         ))}
       </Grid>
       <Grid item md={4}>
-        <h1>Placeholder</h1>
+        <div className={styles.rightSide}>
+          <CountDown />
+        </div>
       </Grid>
     </Grid>
   );
