@@ -5,12 +5,12 @@ const useStyles = makeStyles((theme: Theme) =>
     leftSide: {
       position: "fixed",
       top: theme.spacing(15),
-      left: theme.spacing(10),
+      left: theme.spacing(15),
     },
     rightSide: {
       position: "fixed",
       top: theme.spacing(15),
-      right: theme.spacing(10),
+      right: theme.spacing(15),
     },
   })
 );
