@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme: Theme) =>
     rightSide: {
       position: "fixed",
       top: theme.spacing(15),
-      right: theme.spacing(15),
+      // Use left to deal with hidden right-side scroll
+      left: theme.spacing(114),
     },
   })
 );
