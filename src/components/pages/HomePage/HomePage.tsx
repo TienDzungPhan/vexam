@@ -4,6 +4,7 @@ import Question from "@Modules/Question";
 import { Grid } from "@material-ui/core";
 import Filters from "@Modules/Filters";
 import CountDown from "@Core/CountDown";
+import Performance from "@Modules/Performance";
 import useStyles from "./HomePage.styles";
 
 const questions: IQuestion[] = [
@@ -96,6 +97,7 @@ const HomePage: React.FC = () => {
       <Grid item md={4}>
         <div className={styles.rightSide}>
           <CountDown />
+          <Performance />
         </div>
       </Grid>
     </Grid>
