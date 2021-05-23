@@ -4,9 +4,9 @@
     "paths": {
       "@Assets/*": ["./assets/*"],
       "@Images/*": ["./assets/images/*"],
-      "@Components/*": ["./components/*"],
       "@Core/*": ["./components/core/*"],
       "@Modules/*": ["./components/modules/*"],
+      "@Layouts/*": ["./components/layouts/*"],
       "@Pages/*": ["./components/pages/*"],
       "@Routes/*": ["./components/routes/*"],
       "@Contexts/*": ["./contexts/*"],

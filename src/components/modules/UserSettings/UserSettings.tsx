@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -20,7 +21,7 @@ const UserSettings: React.FC = () => {
   const currentUser = { username: "Dzung Phan" };
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -39,7 +40,7 @@ const UserSettings: React.FC = () => {
         startIcon={<UserAvatar size="small" />}
         endIcon={<ArrowDropDownIcon />}
         className={styles.button}
-        onClick={handleClick}
+        onClick={handleOpen}
       >
         {currentUser?.username}
       </Button>
@@ -59,7 +60,12 @@ const UserSettings: React.FC = () => {
         className={styles.popover}
       >
         <List>
-          <ListItem button>
+          <ListItem
+            button
+            component={RouterLink}
+            to="/profile/1"
+            onClick={handleClose}
+          >
             <ListItemIcon>
               <AccountBoxIcon />
             </ListItemIcon>
@@ -74,7 +80,7 @@ const UserSettings: React.FC = () => {
         </List>
         <Divider />
         <List>
-          <ListItem button>
+          <ListItem button onClick={handleClose}>
             <ListItemIcon>
               <ExitToAppIcon />
             </ListItemIcon>
