@@ -1,10 +1,12 @@
 import TwoSectionsLayout from "@Layouts/TwoSectionsLayout";
+import QuestionForm from "@Modules/QuestionForm";
 import React from "react";
 
 const CreateQuestionPage: React.FC = () => {
   return (
     <TwoSectionsLayout
-      main={<h1>Sample Main</h1>}
+      title="Create Question"
+      main={<QuestionForm />}
       right={<h1>Sample Right</h1>}
     />
   );

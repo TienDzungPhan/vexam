@@ -2,6 +2,9 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    title: {
+      marginBottom: theme.spacing(2),
+    },
     rightSide: {
       position: "fixed",
       top: theme.spacing(10),
