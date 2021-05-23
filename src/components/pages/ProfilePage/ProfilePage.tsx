@@ -1,10 +1,10 @@
 import React from "react";
-import { IQuestion } from "@Models/Question";
-import Question from "@Modules/Question";
-import Filters from "@Modules/Filters";
-import CountDown from "@Core/CountDown";
-import Performance from "@Modules/Performance";
 import ThreeSectionsLayout from "@Layouts/ThreeSectionsLayout";
+import { IQuestion } from "@Models/Question";
+import Biography from "@Modules/Biography";
+import Filters from "@Modules/Filters";
+import Question from "@Modules/Question";
+import Performance from "@Modules/Performance";
 
 const questions: IQuestion[] = [
   {
@@ -79,7 +79,7 @@ const questions: IQuestion[] = [
   },
 ];
 
-const HomePage: React.FC = () => {
+const ProfilePage: React.FC = () => {
   return (
     <ThreeSectionsLayout
       left={<Filters />}
@@ -92,7 +92,7 @@ const HomePage: React.FC = () => {
       }
       right={
         <>
-          <CountDown />
+          <Biography />
           <Performance />
         </>
       }
@@ -100,4 +100,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default ProfilePage;

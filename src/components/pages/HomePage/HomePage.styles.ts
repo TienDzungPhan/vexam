@@ -1,19 +1,5 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    leftSide: {
-      position: "fixed",
-      top: theme.spacing(15),
-      left: theme.spacing(15),
-    },
-    rightSide: {
-      position: "fixed",
-      top: theme.spacing(15),
-      // Use left to deal with hidden right-side scroll
-      left: theme.spacing(114),
-    },
-  })
-);
+const useStyles = makeStyles((theme: Theme) => createStyles({}));
 
 export default useStyles;

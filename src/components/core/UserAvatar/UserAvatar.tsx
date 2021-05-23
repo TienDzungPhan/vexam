@@ -5,7 +5,7 @@ import useStyles from "./UserAvatar.styles";
 
 interface IProps {
   avatarUrl?: string;
-  size: string;
+  size?: string;
 }
 
 const UserAvatar: React.FC<IProps> = ({ avatarUrl, size }) => {

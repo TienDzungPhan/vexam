@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -19,7 +20,7 @@ const NavBar: React.FC = () => {
   return (
     <AppBar position="fixed" color="transparent" className={styles.navBar}>
       <Toolbar className={styles.toolbar}>
-        <Button color="inherit">
+        <Button color="inherit" component={RouterLink} to="/">
           <Typography variant="h6" color="textPrimary" noWrap>
             JapanExam
           </Typography>

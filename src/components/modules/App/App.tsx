@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import NavBar from "@Modules/NavBar";
 import HomePage from "@Pages/HomePage";
+import ProfilePage from "@Pages/ProfilePage";
 import { useTheme } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
 import useStyles from "./App.styles";
@@ -18,6 +19,9 @@ const App: React.FC = () => {
           <Switch>
             <Route exact path="/">
               <HomePage />
+            </Route>
+            <Route exact path="/profile/:id">
+              <ProfilePage />
             </Route>
           </Switch>
         </main>

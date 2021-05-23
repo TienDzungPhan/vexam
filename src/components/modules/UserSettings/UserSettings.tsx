@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -59,7 +60,7 @@ const UserSettings: React.FC = () => {
         className={styles.popover}
       >
         <List>
-          <ListItem button>
+          <ListItem button component={RouterLink} to="/profile/1">
             <ListItemIcon>
               <AccountBoxIcon />
             </ListItemIcon>
