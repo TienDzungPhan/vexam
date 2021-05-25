@@ -13,6 +13,12 @@ const useStyles = makeStyles((theme: Theme) =>
     input: {
       marginBottom: theme.spacing(2),
     },
+    correct: {
+      color: theme.palette.success.main,
+    },
+    error: {
+      color: theme.palette.error.main,
+    },
   })
 );
 

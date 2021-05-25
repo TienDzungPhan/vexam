@@ -4,23 +4,18 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  Button,
-  InputAdornment,
+  Radio,
+  MenuItem,
+  TextField,
   List,
+  ListSubheader,
   ListItem,
   ListItemIcon,
   ListItemText,
-  MenuItem,
-  OutlinedInput,
-  TextField,
-  ListSubheader,
-  ButtonGroup,
 } from "@material-ui/core";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import CheckIcon from "@material-ui/icons/Check";
 import AddIcon from "@material-ui/icons/Add";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { TOption } from "@Models/Question";
+import OptionForm from "@Core/OptionForm";
 import useStyles from "./QuestionForm.styles";
 
 const exams = [
@@ -37,15 +32,42 @@ const QuestionForm: React.FC = () => {
     { id: "1", content: "", isCorrect: false },
     { id: "2", content: "", isCorrect: false },
   ] as TOption[]);
+  const handleChangeOptionContent =
+    (id: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newOptions = options.map((option) => {
+        const newOption = option;
+        newOption.isCorrect = false;
+        if (option.id === id) newOption.content = e.target.value;
+        return newOption;
+      });
+      setOptions(newOptions);
+    };
+  const handleSelectOption = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newOptions = options.map((option) => {
+      const newOption = option;
+      if (option.id === e.target.value) newOption.isCorrect = true;
+      else newOption.isCorrect = false;
+      return newOption;
+    });
+    setOptions(newOptions);
+  };
   const handleAddOption = () => {
     setOptions([
       ...options,
-      { id: options.length.toString(), content: "", isCorrect: false },
+      { id: (options.length + 1).toString(), content: "", isCorrect: false },
     ]);
   };
-  const handleDeleteOption = (index: number) => {
+  const handleDeleteOption = (index: number) => () => {
     const targetOption = options[index];
     setOptions(options.filter((option) => option.id !== targetOption.id));
+  };
+  const optionDisabled = (option: TOption) => {
+    const isBlank = !option.content;
+    const isDuplicated =
+      options.filter(
+        (currentOption) => currentOption.content === option.content
+      ).length > 1;
+    return isBlank || isDuplicated;
   };
   return (
     <div>
@@ -120,34 +142,30 @@ const QuestionForm: React.FC = () => {
             {options?.map((option, index) => (
               <ListItem key={option.id}>
                 <ListItemIcon>
-                  <ArrowForwardIosIcon />
+                  <Radio
+                    color="primary"
+                    name="options"
+                    checked={option.isCorrect}
+                    value={option.id}
+                    onChange={handleSelectOption}
+                    disabled={optionDisabled(option)}
+                  />
                 </ListItemIcon>
                 <ListItemText
                   primary={
-                    <OutlinedInput
-                      id="option"
-                      type="text"
-                      fullWidth
-                      // value={values.password}
-                      // onChange={handleChange('password')}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          {index < 2 ? (
-                            <Button startIcon={<CheckIcon />}>Select</Button>
-                          ) : (
-                            <ButtonGroup variant="text">
-                              <Button startIcon={<CheckIcon />}>Select</Button>
-                              <Button
-                                startIcon={<DeleteIcon />}
-                                onClick={() => handleDeleteOption(index)}
-                              >
-                                Delete
-                              </Button>
-                            </ButtonGroup>
-                          )}
-                        </InputAdornment>
-                      }
+                    <OptionForm
+                      option={option}
+                      index={index}
+                      handleChangeOptionContent={handleChangeOptionContent}
+                      handleDeleteOption={handleDeleteOption}
                     />
+                  }
+                  secondary={
+                    optionDisabled(option) && (
+                      <span className={styles.error}>
+                        Blank or duplicated option!
+                      </span>
+                    )
                   }
                 />
               </ListItem>
