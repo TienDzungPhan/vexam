@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import NavBar from "./NavBar";
+import QuestionForm from "./QuestionForm";
 
-test("renders NavBar", () => {
-  render(<NavBar />);
+test("renders QuestionForm", () => {
+  render(<QuestionForm />);
   expect(false).toBe(true);
 });
