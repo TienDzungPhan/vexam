@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { IQuestion } from "@Models/Question";
 import UserAvatar from "@Core/UserAvatar";
-import Option from "@Core/Option";
 import {
   Button,
   Card,
@@ -10,7 +10,6 @@ import {
   CardHeader,
   Divider,
   IconButton,
-  RadioGroup,
   Typography,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -19,6 +18,7 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
 import { timePast } from "@Helpers/time";
+import QuestionContent from "@Core/QuestionContent";
 import useStyles from "./Question.styles";
 
 interface IProps {
@@ -73,40 +73,23 @@ const Question: React.FC<IProps> = ({ question }) => {
         </Typography>
       </CardContent>
       <Divider variant="middle" />
-      <CardContent className={styles.questionContent}>
-        <Typography variant="h6" className="japanese">
-          {question?.title}
-        </Typography>
-        <RadioGroup
-          aria-label="options"
-          name="answer"
-          className={styles.options}
-          value={selectedContent}
-          onChange={handleOptionChange}
-        >
-          {question?.options.map((option) => (
-            <Option
-              key={option.id}
-              option={option}
-              selectedContent={selectedContent}
-              answered={answered}
-            />
-          ))}
-        </RadioGroup>
-        {answered && (
-          <Typography variant="subtitle2" className={styles.explanation}>
-            {question?.explanation}
-          </Typography>
-        )}
-        <Typography variant="caption">
-          99 people attempted this question
-        </Typography>
-      </CardContent>
+      <QuestionContent
+        question={question}
+        answered={answered}
+        selectedContent={selectedContent}
+        handleOptionChange={handleOptionChange}
+      />
       <CardActions className={styles.actions}>
         {answered ? (
           <>
             <Button startIcon={<ThumbUpAltOutlinedIcon />}>69 Likes</Button>
-            <Button startIcon={<QuestionAnswerIcon />}>159 Comments</Button>
+            <Button
+              startIcon={<QuestionAnswerIcon />}
+              component={RouterLink}
+              to="/questions/1"
+            >
+              159 Comments
+            </Button>
             <Button startIcon={<BookmarkBorderOutlinedIcon />}>Save</Button>
           </>
         ) : (

@@ -4,6 +4,7 @@ import NavBar from "@Modules/NavBar";
 import HomePage from "@Pages/HomePage";
 import ProfilePage from "@Pages/ProfilePage";
 import CreateQuestionPage from "@Pages/CreateQuestionPage";
+import QuestionPage from "@Pages/QuestionPage";
 import { useTheme } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
 import useStyles from "./App.styles";
@@ -24,8 +25,11 @@ const App: React.FC = () => {
             <Route exact path="/profile/:id">
               <ProfilePage />
             </Route>
-            <Route exact path="/create">
+            <Route exact path="/questions/create">
               <CreateQuestionPage />
+            </Route>
+            <Route exact path="/questions/:id">
+              <QuestionPage />
             </Route>
           </Switch>
         </main>

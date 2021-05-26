@@ -27,7 +27,7 @@ const NavBar: React.FC = () => {
         </Button>
         <SearchBar />
         <div className={styles.menu}>
-          <IconButton component={RouterLink} to="/create">
+          <IconButton component={RouterLink} to="/questions/create">
             <AddIcon />
           </IconButton>
           <IconButton>
