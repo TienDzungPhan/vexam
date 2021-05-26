@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import NavBar from "./NavBar";
+import OptionForm from "./OptionForm";
 
-test("renders NavBar", () => {
-  render(<NavBar />);
+test("renders OptionForm", () => {
+  render(<OptionForm />);
   expect(false).toBe(true);
 });
