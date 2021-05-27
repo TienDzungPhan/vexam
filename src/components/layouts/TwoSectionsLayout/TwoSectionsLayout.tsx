@@ -6,12 +6,18 @@ interface IProps {
   title?: string;
   main: JSX.Element;
   right: JSX.Element;
+  nofixed?: boolean;
 }
 
-const TwoSectionsLayout: React.FC<IProps> = ({ title, main, right }) => {
+const TwoSectionsLayout: React.FC<IProps> = ({
+  title,
+  main,
+  right,
+  nofixed,
+}) => {
   const styles = useStyles();
   return (
-    <Grid container spacing={0}>
+    <Grid container spacing={nofixed ? 3 : 0}>
       <Grid item md={8}>
         {title && (
           <div className={styles.title}>
@@ -22,7 +28,7 @@ const TwoSectionsLayout: React.FC<IProps> = ({ title, main, right }) => {
         {main}
       </Grid>
       <Grid item md={4}>
-        <div className={styles.rightSide}>{right}</div>
+        <div className={nofixed ? "" : styles.rightSide}>{right}</div>
       </Grid>
     </Grid>
   );

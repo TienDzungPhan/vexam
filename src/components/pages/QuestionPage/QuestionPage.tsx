@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { IQuestion } from "@Models/Question";
 import TwoSectionsLayout from "@Layouts/TwoSectionsLayout";
 import QuestionContent from "@Core/QuestionContent";
+import QuestionDescription from "@Core/QuestionDescription";
+import QuestionCategory from "@Core/QuestionCategory";
+import AnswersCount from "@Core/AnswersCount";
+import QuestionActions from "@Core/QuestionActions";
+import { Divider } from "@material-ui/core";
+import Comments from "@Modules/Comments";
+import useStyles from "./QuestionPage.styles";
 
 const question: IQuestion = {
   id: "1",
@@ -40,26 +47,41 @@ const question: IQuestion = {
 };
 
 const QuestionPage: React.FC = () => {
+  const styles = useStyles();
   const [answered, setAnswered] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");
-  // const handleReveilAnswer = () => {
-  //   setAnswered(true);
-  // };
+  const handleReveilAnswer = () => {
+    setAnswered(true);
+  };
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedContent(e.target.value);
   };
   return (
     <TwoSectionsLayout
+      nofixed
       main={
-        <QuestionContent
-          variant="detailed"
-          question={question}
-          answered={answered}
-          selectedContent={selectedContent}
-          handleOptionChange={handleOptionChange}
-        />
+        <>
+          <QuestionContent
+            variant="detailed"
+            question={question}
+            answered={answered}
+            selectedContent={selectedContent}
+            handleOptionChange={handleOptionChange}
+          />
+          <QuestionCategory variant="detailed" question={question} />
+          <div className={styles.answersCountAndActions}>
+            <AnswersCount variant="detailed" />
+            <QuestionActions
+              variant="detailed"
+              answered={answered}
+              selectedContent={selectedContent}
+              handleReveilAnswer={handleReveilAnswer}
+            />
+          </div>
+          <Comments question={question} />
+        </>
       }
-      right={<h1>Placeholder</h1>}
+      right={<QuestionDescription variant="detailed" question={question} />}
     />
   );
 };

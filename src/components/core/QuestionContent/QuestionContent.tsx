@@ -45,17 +45,18 @@ const Content: React.FC<IProps> = ({
           {question?.explanation}
         </Typography>
       )}
-      <Typography variant="caption">
+      {/* <Typography variant="caption">
         99 people attempted this question
-      </Typography>
+      </Typography> */}
     </CardContent>
   );
 };
 
 const QuestionContent: React.FC<IProps> = (props) => {
+  const styles = useStyles();
   // eslint-disable-next-line react/destructuring-assignment
   return props.variant === "detailed" ? (
-    <Card>
+    <Card className={styles.questionCard}>
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Content {...props} />
     </Card>
