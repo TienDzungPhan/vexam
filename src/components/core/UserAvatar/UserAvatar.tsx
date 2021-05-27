@@ -16,6 +16,7 @@ const UserAvatar: React.FC<IProps> = ({ avatarUrl, size }) => {
         return styles.small;
       case "large":
         return styles.large;
+      case "medium":
       default:
         return "";
     }

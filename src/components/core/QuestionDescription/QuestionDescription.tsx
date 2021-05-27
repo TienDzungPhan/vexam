@@ -1,9 +1,11 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Card,
   CardContent,
   CardHeader,
   IconButton,
+  Link,
   Typography,
 } from "@material-ui/core";
 import { IQuestion } from "@Models/Question";
@@ -17,18 +19,32 @@ interface IProps {
   question: IQuestion;
 }
 
-const Description: React.FC<IProps> = ({ question }) => {
+const Description: React.FC<IProps> = ({ variant, question }) => {
   const styles = useStyles();
   return (
     <>
       <CardHeader
-        avatar={<UserAvatar size="small" />}
+        avatar={
+          <UserAvatar size={variant === "detailed" ? "medium" : "small"} />
+        }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={`${question?.author}・${timePast(question?.updatedAt)}`}
+        title={
+          <>
+            <Typography component="span" variant="body1">
+              <Link color="inherit" component={RouterLink} to="/profile/1">
+                {question?.author}
+              </Link>
+            </Typography>
+            ・
+            <Typography component="span" variant="caption">
+              {timePast(question?.updatedAt)}
+            </Typography>
+          </>
+        }
         className={styles.header}
       />
       <CardContent className={styles.description}>

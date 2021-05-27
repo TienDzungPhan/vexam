@@ -6,8 +6,8 @@ import QuestionDescription from "@Core/QuestionDescription";
 import QuestionCategory from "@Core/QuestionCategory";
 import AnswersCount from "@Core/AnswersCount";
 import QuestionActions from "@Core/QuestionActions";
-import { Divider } from "@material-ui/core";
 import Comments from "@Modules/Comments";
+import CommentForm from "@Modules/CommentForm";
 import useStyles from "./QuestionPage.styles";
 
 const question: IQuestion = {
@@ -78,7 +78,12 @@ const QuestionPage: React.FC = () => {
               handleReveilAnswer={handleReveilAnswer}
             />
           </div>
-          <Comments question={question} />
+          {answered && (
+            <>
+              <CommentForm />
+              <Comments question={question} />
+            </>
+          )}
         </>
       }
       right={<QuestionDescription variant="detailed" question={question} />}

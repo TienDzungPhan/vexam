@@ -18,7 +18,7 @@ const TwoSectionsLayout: React.FC<IProps> = ({
   const styles = useStyles();
   return (
     <Grid container spacing={nofixed ? 3 : 0}>
-      <Grid item md={8}>
+      <Grid item md={8} className={styles.main}>
         {title && (
           <div className={styles.title}>
             <Typography variant="h4">{title}</Typography>
