@@ -14,11 +14,15 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import SearchBar from "@Modules/SearchBar";
 import UserSettings from "@Modules/UserSettings";
 import { DialogContext } from "@Contexts/DialogContext";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 import useStyles from "./NavBar.styles";
 
 const NavBar: React.FC = () => {
   const styles = useStyles();
   const { handleDialogOpen } = useContext(DialogContext);
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <AppBar position="fixed" color="transparent" className={styles.navBar}>
       <Toolbar className={styles.toolbar}>
@@ -27,7 +31,7 @@ const NavBar: React.FC = () => {
             Vexam
           </Typography>
         </Button>
-        <SearchBar />
+        {isDesktop && <SearchBar />}
         <div className={styles.menu}>
           {/* <IconButton component={RouterLink} to="/questions/create">
             <AddIcon />
