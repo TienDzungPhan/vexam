@@ -5,6 +5,9 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       marginBottom: theme.spacing(2),
     },
+    main: {
+      width: "100%",
+    },
     rightSide: {
       position: "fixed",
       top: theme.spacing(10),

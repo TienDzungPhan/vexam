@@ -2,11 +2,11 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    question: {
-      position: "relative",
-      overflow: "visible",
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
+    header: {
+      paddingBottom: 0,
+    },
+    description: {
+      paddingTop: theme.spacing(1),
     },
   })
 );

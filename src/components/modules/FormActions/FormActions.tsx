@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Card,
@@ -30,7 +31,9 @@ const FormActions: React.FC = () => {
         </TextField>
       </CardContent>
       <CardActions className={styles.actions}>
-        <Button>Cancel</Button>
+        <Button component={RouterLink} to="/">
+          Cancel
+        </Button>
         <Button variant="contained" color="primary">
           Post
         </Button>
