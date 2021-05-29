@@ -11,7 +11,7 @@ interface IProps {
 const ThreeSectionsLayout: React.FC<IProps> = ({ left, main, right }) => {
   const styles = useStyles();
   return (
-    <Grid container spacing={0}>
+    <Grid container spacing={0} className={styles.container}>
       <Grid item md={4}>
         <div className={styles.leftSide}>{left}</div>
       </Grid>

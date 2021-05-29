@@ -38,7 +38,7 @@ const SettingsList: React.FC<IProps> = ({ closeSettings }) => {
           <ListItemText primary="Language" />
         </ListItem>
       </List>
-      <Divider />
+      <Divider variant="middle" />
       <List>
         <ListItem button onClick={closeSettings}>
           <ListItemIcon>
