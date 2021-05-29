@@ -5,6 +5,9 @@ import Filters from "@Modules/Filters";
 import CountDown from "@Core/CountDown";
 import Performance from "@Modules/Performance";
 import ThreeSectionsLayout from "@Layouts/ThreeSectionsLayout";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+import FiltersDrawer from "@Modules/FiltersDrawer";
 
 const questions: IQuestion[] = [
   {
@@ -80,23 +83,28 @@ const questions: IQuestion[] = [
 ];
 
 const HomePage: React.FC = () => {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   return (
-    <ThreeSectionsLayout
-      left={<Filters />}
-      main={
-        <>
-          {questions?.map((question) => (
-            <Question key={question?.id} question={question} />
-          ))}
-        </>
-      }
-      right={
-        <>
-          <CountDown />
-          <Performance />
-        </>
-      }
-    />
+    <>
+      {!isDesktop && <FiltersDrawer />}
+      <ThreeSectionsLayout
+        left={<Filters />}
+        main={
+          <>
+            {questions?.map((question) => (
+              <Question key={question?.id} question={question} />
+            ))}
+          </>
+        }
+        right={
+          <>
+            <CountDown />
+            <Performance />
+          </>
+        }
+      />
+    </>
   );
 };
 

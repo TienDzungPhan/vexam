@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import {
   Checkbox,
+  Divider,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormLabel,
+  Typography,
 } from "@material-ui/core";
 import useStyles from "./Filters.styles";
+
+interface IProps {
+  variant?: "drawer";
+}
 
 const exams = [
   { id: "1", name: "JLPT N5", categories: ["N5-1", "N5-2", "N5-3"] },
@@ -20,7 +26,7 @@ const examFilters = exams.reduce((filters, exam) => {
   return { ...filters, [exam.id]: false };
 }, {} as { [x: string]: boolean });
 
-const Filters: React.FC = () => {
+const Filters: React.FC<IProps> = ({ variant }) => {
   const styles = useStyles();
   const [currentExamFilters, setCurrentExamFilters] = useState(examFilters);
   const handleExamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +37,12 @@ const Filters: React.FC = () => {
   };
   return (
     <div className={styles.filters}>
+      {variant === "drawer" && (
+        <>
+          <Typography variant="h5">Filters</Typography>
+          <Divider variant="middle" />
+        </>
+      )}
       <FormControl component="fieldset" className={styles.formControl}>
         <FormLabel component="legend">Exams</FormLabel>
         <FormGroup>
