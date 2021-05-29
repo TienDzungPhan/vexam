@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Button, IconButton, Popover, Drawer } from "@material-ui/core";
+import {
+  Button,
+  Divider,
+  IconButton,
+  Popover,
+  SwipeableDrawer,
+  Typography,
+} from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import UserAvatar from "@Core/UserAvatar";
 import SettingsList from "@Core/SettingsList";
@@ -53,6 +60,7 @@ const SettingsDropdown: React.FC = () => {
 };
 
 const SettingsDrawer: React.FC = () => {
+  const styles = useStyles();
   const [opened, setOpened] = useState(false);
   const handleOpen = () => {
     setOpened(true);
@@ -65,16 +73,27 @@ const SettingsDrawer: React.FC = () => {
       <IconButton onClick={handleOpen}>
         <UserAvatar size="small" />
       </IconButton>
-      <Drawer anchor="right" open={opened} onClose={handleClose}>
+      <SwipeableDrawer
+        anchor="right"
+        open={opened}
+        onOpen={handleOpen}
+        onClose={handleClose}
+        className={styles.rightDrawer}
+      >
+        <div className={styles.userInfo}>
+          <UserAvatar size="x-large" />
+          <Typography variant="h6">Dzung Phan</Typography>
+        </div>
+        <Divider variant="middle" />
         <SettingsList closeSettings={handleClose} />
-      </Drawer>
+      </SwipeableDrawer>
     </>
   );
 };
 
 const UserSettings: React.FC = () => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   return isDesktop ? <SettingsDropdown /> : <SettingsDrawer />;
 };
 

@@ -2,6 +2,9 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    container: {
+      justifyContent: "center",
+    },
     leftSide: {
       position: "fixed",
       top: theme.spacing(10),

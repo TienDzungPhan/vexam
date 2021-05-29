@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     navBar: {
-      background: "rgba(255, 255, 255, 0.9)",
+      background: "rgba(255, 255, 255, 0.97)",
       color: theme.palette.primary.main,
     },
     menu: {
@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: {
       justifyContent: "space-between",
+    },
+    bottomNavBar: {
+      top: "auto",
+      bottom: 0,
     },
   })
 );
