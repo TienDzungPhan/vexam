@@ -1,5 +1,9 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
+interface IProps {
+  isDesktop: boolean;
+}
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -16,6 +20,9 @@ const useStyles = makeStyles((theme: Theme) =>
       // Use left to deal with hidden right-side scroll
       left: theme.spacing(114),
       width: theme.spacing(32),
+    },
+    main: {
+      paddingTop: (props: IProps) => (props.isDesktop ? 0 : theme.spacing(3)),
     },
   })
 );

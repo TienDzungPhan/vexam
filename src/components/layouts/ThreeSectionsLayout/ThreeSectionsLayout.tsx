@@ -1,5 +1,7 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 import useStyles from "./ThreeSectionsLayout.styles";
 
 interface IProps {
@@ -9,18 +11,24 @@ interface IProps {
 }
 
 const ThreeSectionsLayout: React.FC<IProps> = ({ left, main, right }) => {
-  const styles = useStyles();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const styles = useStyles({ isDesktop });
   return (
     <Grid container spacing={0} className={styles.container}>
+      {isDesktop && (
+        <Grid item md={4}>
+          <div className={styles.leftSide}>{left}</div>
+        </Grid>
+      )}
       <Grid item md={4}>
-        <div className={styles.leftSide}>{left}</div>
+        <div className={styles.main}>{main}</div>
       </Grid>
-      <Grid item md={4}>
-        {main}
-      </Grid>
-      <Grid item md={4}>
-        <div className={styles.rightSide}>{right}</div>
-      </Grid>
+      {isDesktop && (
+        <Grid item md={4}>
+          <div className={styles.rightSide}>{right}</div>
+        </Grid>
+      )}
     </Grid>
   );
 };
