@@ -1,3 +1,5 @@
+import firebase from "@Services/config/firebase";
+
 export type TOption = {
   id: string;
   content: string;
@@ -16,7 +18,7 @@ export interface IQuestion {
   options: TOption[];
   explanation: string;
   // answerCount: number;
-  // context: string;
-  createdAt: Date;
-  updatedAt: Date;
+  // contextId: string;
+  createdAt: firebase.firestore.Timestamp;
+  updatedAt: firebase.firestore.Timestamp;
 }

@@ -8,12 +8,13 @@ import AnswersCount from "@Core/AnswersCount";
 import QuestionActions from "@Core/QuestionActions";
 import Comments from "@Modules/Comments";
 import CommentForm from "@Modules/CommentForm";
+import { Timestamp } from "@Services/config/firebase";
 import useStyles from "./QuestionPage.styles";
 
 const question: IQuestion = {
   id: "1",
-  createdAt: new Date("May 16, 2021 16:57:12"),
-  updatedAt: new Date("May 21, 2021 16:57:12"),
+  createdAt: Timestamp.fromDate(new Date("May 16, 2021 16:57:12")),
+  updatedAt: Timestamp.fromDate(new Date("May 21, 2021 16:57:12")),
   exam: "JLPT N5",
   author: "Dzung Phan",
   visibility: "Public",

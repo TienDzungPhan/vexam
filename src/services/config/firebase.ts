@@ -18,4 +18,6 @@ export const auth = firebase.auth();
 
 export const storage = firebase.storage();
 
+export const { Timestamp } = firebase.firestore;
+
 export default firebase;

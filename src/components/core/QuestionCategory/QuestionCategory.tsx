@@ -20,7 +20,7 @@ const QuestionCategory: React.FC<IProps> = ({ variant, question }) => {
         disableElevation
         className={styles.upperButton}
       >
-        <Typography noWrap>{question?.exam}</Typography>
+        <Typography noWrap>JLPT N5</Typography>
       </Button>
       <Button
         variant="contained"
