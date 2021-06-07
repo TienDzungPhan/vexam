@@ -3,6 +3,8 @@ import firebase from "./firebase";
 
 const db = firebase.firestore();
 
+export const { Timestamp } = firebase.firestore;
+
 export const getSingleDocument = async (
   collection: string,
   id: string

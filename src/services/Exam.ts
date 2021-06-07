@@ -1,6 +1,6 @@
 import { IExam } from "@Models/Exam";
-import firebase, { db } from "./config/firebase";
-import {
+import firebase from "./config/firebase";
+import db, {
   getMultipleDocuments,
   getSingleDocument,
   useDocumentSubscription,

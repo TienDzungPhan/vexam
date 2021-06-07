@@ -13,7 +13,8 @@
       "@Helpers/*": ["./helpers/*"],
       "@Hooks/*": ["./hooks/*"],
       "@Models/*": ["./models/*"],
-      "@Services/*": ["./services/*"]
+      "@Services/*": ["./services/*"],
+      "@Config/*": ["./services/config/*"]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { db } from "./config/firebase";
+import db from "./config/firestore";
 
 const questionsDB = db.collection("questions");
 
