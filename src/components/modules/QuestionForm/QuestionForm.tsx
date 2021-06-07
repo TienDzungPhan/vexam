@@ -17,12 +17,12 @@ import AddIcon from "@material-ui/icons/Add";
 import { TOption } from "@Models/Question";
 import OptionForm from "@Core/OptionForm";
 import { IExam, TCategory } from "@Models/Exam";
-import examsDB from "@Services/Exam";
+import { getExams } from "@Services/Exam";
 import useStyles from "./QuestionForm.styles";
 
 const QuestionForm: React.FC = () => {
   const styles = useStyles();
-  const [exams, setExams] = useState<IExam[]>();
+  const [exams, setExams] = useState<IExam[]>([]);
   const [selectedExam, setSelectedExam] = useState<IExam>();
   const [selectedCategory, setSelectedCategory] = useState<TCategory>();
   const [options, setOptions] = useState([
@@ -31,21 +31,17 @@ const QuestionForm: React.FC = () => {
   ] as TOption[]);
   const loadExams = useCallback(async () => {
     try {
-      const examsSnapshot = await examsDB.get();
-      const examsData: IExam[] = [];
-      examsSnapshot.forEach((doc) =>
-        examsData.push({
-          id: doc.id,
-          ...doc.data(),
-        } as IExam)
-      );
+      const examsData = await getExams();
       setExams(examsData);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
   }, []);
-  const categories = useMemo(() => selectedExam?.categories, [selectedExam]);
+  const categories = useMemo(
+    () => selectedExam?.categories || ([] as TCategory[]),
+    [selectedExam]
+  );
   const handleExamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetExam = exams?.find((exam) => exam.id === e.target.value);
     setSelectedExam(targetExam);
