@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { isNonNullChain } from "typescript";
 import firebase from "./firebase";
 
 const db = firebase.firestore();
