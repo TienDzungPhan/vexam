@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { isNonNullChain } from "typescript";
 import firebase from "./firebase";
 
 const db = firebase.firestore();
@@ -25,12 +26,14 @@ export const getMultipleDocuments = async (
 
 export const useDocumentSubscription = (
   ref: firebase.firestore.DocumentReference
-): {
-  latestData?: Record<string, unknown>;
-  error?: firebase.firestore.FirestoreError;
-} => {
-  const [latestData, setLatestData] = useState<Record<string, unknown>>();
-  const [error, setError] = useState<firebase.firestore.FirestoreError>();
+): [
+  Record<string, unknown> | null,
+  firebase.firestore.FirestoreError | null
+] => {
+  const [latestData, setLatestData] =
+    useState<Record<string, unknown> | null>(null);
+  const [error, setError] =
+    useState<firebase.firestore.FirestoreError | null>(null);
   useEffect(() => {
     const unsubscribe = ref.onSnapshot(
       (doc) => {
@@ -44,17 +47,19 @@ export const useDocumentSubscription = (
     // Adding ref to the deps array will make the hooks keep on re-rendering
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return { latestData, error };
+  return [latestData, error];
 };
 
 export const useQuerySubscription = (
   ref: firebase.firestore.Query
-): {
-  latestData?: Record<string, unknown>[];
-  error?: firebase.firestore.FirestoreError;
-} => {
-  const [latestData, setLatestData] = useState<Record<string, unknown>[]>();
-  const [error, setError] = useState<firebase.firestore.FirestoreError>();
+): [
+  Record<string, unknown>[] | null,
+  firebase.firestore.FirestoreError | null
+] => {
+  const [latestData, setLatestData] =
+    useState<Record<string, unknown>[] | null>(null);
+  const [error, setError] =
+    useState<firebase.firestore.FirestoreError | null>(null);
   useEffect(() => {
     const unsubscribe = ref.onSnapshot(
       (snapshot) => {
@@ -70,7 +75,7 @@ export const useQuerySubscription = (
     // Adding ref to the deps array will make the hooks keep on re-rendering
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return { latestData, error };
+  return [latestData, error];
 };
 
 export default db;

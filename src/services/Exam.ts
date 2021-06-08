@@ -23,24 +23,18 @@ export const getExams = async (
 
 export const useExamSubscription = (
   ref: firebase.firestore.DocumentReference
-): {
-  examSnapshot?: IExam;
-  error?: firebase.firestore.FirestoreError;
-} => {
-  const { latestData, error } = useDocumentSubscription(ref);
-  const examSnapshot = latestData as IExam | undefined;
-  return { examSnapshot, error };
+): [IExam | null, firebase.firestore.FirestoreError | null] => {
+  const [latestData, error] = useDocumentSubscription(ref);
+  const examSnapshot = latestData as IExam | null;
+  return [examSnapshot, error];
 };
 
 export const useExamQuerySubscription = (
   ref: firebase.firestore.Query
-): {
-  querySnapshot?: IExam[];
-  error?: firebase.firestore.FirestoreError;
-} => {
-  const { latestData, error } = useQuerySubscription(ref);
-  const querySnapshot = latestData as IExam[] | undefined;
-  return { querySnapshot, error };
+): [IExam[] | null, firebase.firestore.FirestoreError | null] => {
+  const [latestData, error] = useQuerySubscription(ref);
+  const querySnapshot = latestData as IExam[] | null;
+  return [querySnapshot, error];
 };
 
 export default examsDB;
