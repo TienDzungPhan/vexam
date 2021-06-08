@@ -10,8 +10,17 @@ export type TOption = {
 export interface IQuestion {
   id: string;
   exam: string;
+  // exam: {
+  //   id: string;
+  //   name: string;
+  // };
   category: string;
   author: string;
+  // author: {
+  //   id: string;
+  //   name: string;
+  //   avatarUrl: string;
+  // };
   visibility: string;
   description: string;
   title: string;
