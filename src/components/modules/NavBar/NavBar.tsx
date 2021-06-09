@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   AppBar,
@@ -13,10 +13,12 @@ import AddIcon from "@material-ui/icons/Add";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import SearchBar from "@Modules/SearchBar";
 import UserSettings from "@Modules/UserSettings";
+import { DialogContext } from "@Contexts/DialogContext";
 import useStyles from "./NavBar.styles";
 
 const NavBar: React.FC = () => {
   const styles = useStyles();
+  const { handleDialogOpen } = useContext(DialogContext);
   return (
     <AppBar position="fixed" color="transparent" className={styles.navBar}>
       <Toolbar className={styles.toolbar}>
@@ -27,7 +29,7 @@ const NavBar: React.FC = () => {
         </Button>
         <SearchBar />
         <div className={styles.menu}>
-          <IconButton component={RouterLink} to="/questions/create">
+          {/* <IconButton component={RouterLink} to="/questions/create">
             <AddIcon />
           </IconButton>
           <IconButton>
@@ -38,7 +40,22 @@ const NavBar: React.FC = () => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <UserSettings />
+          <UserSettings /> */}
+          <Button
+            variant="contained"
+            color="primary"
+            className={styles.button}
+            onClick={handleDialogOpen("log-in")}
+          >
+            Log In
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleDialogOpen("sign-up")}
+          >
+            Sign Up
+          </Button>
         </div>
       </Toolbar>
     </AppBar>

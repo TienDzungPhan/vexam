@@ -7,6 +7,7 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@material-ui/core/styles";
+import DialogProvider from "@Contexts/DialogContext";
 import reportWebVitals from "./reportWebVitals";
 
 const theme = responsiveFontSizes(
@@ -20,7 +21,9 @@ const theme = responsiveFontSizes(
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <DialogProvider>
+        <App />
+      </DialogProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")

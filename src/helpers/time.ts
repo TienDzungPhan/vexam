@@ -4,10 +4,7 @@ export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 export const WEEK = 7 * DAY;
 
-type TTimeString = (date: Date) => string;
-type TDaysLeft = (date: Date) => number;
-
-export const timePast: TTimeString = (origin: Date) => {
+export const timePast = (origin: Date): string => {
   const now = new Date();
   const timeDiff = now.getTime() - origin.getTime();
 
@@ -22,7 +19,7 @@ export const timePast: TTimeString = (origin: Date) => {
   return origin.toLocaleString();
 };
 
-export const daysLeft: TDaysLeft = (event: Date) => {
+export const daysLeft = (event: Date): number => {
   const now = new Date();
   const timeDiff = event.getTime() - now.getTime();
 
