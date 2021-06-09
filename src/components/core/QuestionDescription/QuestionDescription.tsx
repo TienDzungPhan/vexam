@@ -36,12 +36,12 @@ const Description: React.FC<IProps> = ({ variant, question }) => {
           <>
             <Typography component="span" variant="body1">
               <Link color="inherit" component={RouterLink} to="/profile/1">
-                {question?.author}
+                Dzung Phan
               </Link>
             </Typography>
             ・
             <Typography component="span" variant="caption">
-              {timePast(question?.updatedAt)}
+              {timePast(question?.updatedAt.toDate())}
             </Typography>
           </>
         }

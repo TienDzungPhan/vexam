@@ -35,6 +35,7 @@ const Question: React.FC<IProps> = ({ question }) => {
       />
       <AnswersCount />
       <QuestionActions
+        question={question}
         answered={answered}
         selectedContent={selectedContent}
         handleReveilAnswer={handleReveilAnswer}

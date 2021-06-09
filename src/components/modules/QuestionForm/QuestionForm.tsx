@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -16,22 +16,42 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import { TOption } from "@Models/Question";
 import OptionForm from "@Core/OptionForm";
+import { IExam, TCategory } from "@Models/Exam";
+import { getExams } from "@Services/Exam";
 import useStyles from "./QuestionForm.styles";
-
-const exams = [
-  { id: "1", name: "JLPT N5", categories: ["N5-1", "N5-2", "N5-3"] },
-  { id: "2", name: "JLPT N4", categories: ["N4-1", "N4-2", "N4-3"] },
-  { id: "3", name: "JLPT N3", categories: ["N3-1", "N3-2", "N3-3"] },
-  { id: "4", name: "JLPT N2", categories: ["N2-1", "N2-2", "N2-3"] },
-  { id: "5", name: "JLPT N1", categories: ["N1-1", "N1-2", "N1-3"] },
-];
 
 const QuestionForm: React.FC = () => {
   const styles = useStyles();
+  const [exams, setExams] = useState<IExam[]>([]);
+  const [selectedExam, setSelectedExam] = useState<IExam>();
+  const [selectedCategory, setSelectedCategory] = useState<TCategory>();
   const [options, setOptions] = useState([
     { id: "1", content: "", isCorrect: false },
     { id: "2", content: "", isCorrect: false },
   ] as TOption[]);
+  const loadExams = useCallback(async () => {
+    try {
+      const examsData = await getExams();
+      setExams(examsData);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  }, []);
+  const categories = useMemo(
+    () => selectedExam?.categories || ([] as TCategory[]),
+    [selectedExam]
+  );
+  const handleExamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const targetExam = exams?.find((exam) => exam.id === e.target.value);
+    setSelectedExam(targetExam);
+  };
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const targetCategory = categories?.find(
+      (category) => category.name === e.target.value
+    );
+    setSelectedCategory(targetCategory);
+  };
   const handleChangeOptionContent =
     (id: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newOptions = options.map((option) => {
@@ -69,6 +89,9 @@ const QuestionForm: React.FC = () => {
       ).length > 1;
     return isBlank || isDuplicated;
   };
+  useEffect(() => {
+    loadExams();
+  }, [loadExams]);
   return (
     <div>
       <Grid container spacing={3}>
@@ -80,11 +103,14 @@ const QuestionForm: React.FC = () => {
             label="Exam"
             fullWidth
             className={styles.select}
-            // value={currency}
-            // onChange={handleChange}
-            helperText="Please select an exam"
+            value={selectedExam?.id}
+            onChange={handleExamChange}
+            required
           >
-            {exams.map((exam) => (
+            <MenuItem value={undefined} disabled>
+              --Select an Exam-
+            </MenuItem>
+            {exams?.map((exam) => (
               <MenuItem key={exam.id} value={exam.id}>
                 {exam.name}
               </MenuItem>
@@ -99,13 +125,16 @@ const QuestionForm: React.FC = () => {
             label="Category"
             fullWidth
             className={styles.select}
-            // value={currency}
-            // onChange={handleChange}
-            helperText="Please select a category"
+            value={selectedCategory?.name}
+            onChange={handleCategoryChange}
+            required
           >
-            {exams.map((exam) => (
-              <MenuItem key={exam.id} value={exam.id}>
-                {exam.name}
+            <MenuItem value={undefined} disabled>
+              --Select a Category--
+            </MenuItem>
+            {categories?.map((category) => (
+              <MenuItem key={category.name} value={category.name}>
+                {category.name}
               </MenuItem>
             ))}
           </TextField>
@@ -122,6 +151,7 @@ const QuestionForm: React.FC = () => {
             fullWidth
             variant="outlined"
             className={styles.input}
+            required
           />
           <TextField
             id="title"
@@ -131,6 +161,7 @@ const QuestionForm: React.FC = () => {
             fullWidth
             variant="outlined"
             className={styles.input}
+            required
           />
           <List
             subheader={
@@ -185,6 +216,7 @@ const QuestionForm: React.FC = () => {
             fullWidth
             variant="outlined"
             className={styles.input}
+            required
           />
         </CardContent>
       </Card>

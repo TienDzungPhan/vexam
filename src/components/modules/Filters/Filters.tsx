@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Checkbox,
   FormControl,
@@ -6,41 +6,92 @@ import {
   FormGroup,
   FormLabel,
 } from "@material-ui/core";
+import examsDB from "@Services/Exam";
+import {
+  IExam,
+  // TCategory
+} from "@Models/Exam";
 import useStyles from "./Filters.styles";
 
-const exams = [
-  { id: "1", name: "JLPT N5", categories: ["N5-1", "N5-2", "N5-3"] },
-  { id: "2", name: "JLPT N4", categories: ["N4-1", "N4-2", "N4-3"] },
-  { id: "3", name: "JLPT N3", categories: ["N3-1", "N3-2", "N3-3"] },
-  { id: "4", name: "JLPT N2", categories: ["N2-1", "N2-2", "N2-3"] },
-  { id: "5", name: "JLPT N1", categories: ["N1-1", "N1-2", "N1-3"] },
-];
+interface IExamFilter extends IExam {
+  selected: boolean;
+}
 
-const examFilters = exams.reduce((filters, exam) => {
-  return { ...filters, [exam.id]: false };
-}, {} as { [x: string]: boolean });
+// interface ICategoryFilter extends TCategory {
+//   selected: boolean;
+// }
 
 const Filters: React.FC = () => {
   const styles = useStyles();
-  const [currentExamFilters, setCurrentExamFilters] = useState(examFilters);
+  const [examFilters, setExamFilters] = useState<IExamFilter[]>();
+  // const [categoryFilters, setCategoryFilters] = useState(
+  //   [] as ICategoryFilter[]
+  // );
+  const loadExams = useCallback(async () => {
+    try {
+      const examsSnapshot = await examsDB.get();
+      const examsData: IExamFilter[] = [];
+      examsSnapshot.forEach((doc) =>
+        examsData.push({
+          id: doc.id,
+          selected: false,
+          ...doc.data(),
+        } as IExamFilter)
+      );
+      setExamFilters(examsData);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  }, []);
   const handleExamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentExamFilters({
-      ...currentExamFilters,
-      [e.target.name]: e.target.checked,
+    const { name: examId, checked } = e.target;
+    const newExamFilters = examFilters?.map((exam) => {
+      const newExam = exam;
+      if (exam.id === examId) newExam.selected = checked;
+      return newExam;
     });
+    setExamFilters(newExamFilters);
   };
+  // const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, checked } = e.target;
+  //   const newCategoryFilters = categoryFilters.map((category) => {
+  //     const newCategory = category;
+  //     if (category.name === name) newCategory.selected = checked;
+  //     return newCategory;
+  //   });
+  //   setCategoryFilters(newCategoryFilters);
+  // };
+  useEffect(() => {
+    loadExams();
+  }, [loadExams]);
+  // useEffect(() => {
+  //   examFilters.forEach((exam) => {
+  //     if (exam.selected) {
+  //       const categories: ICategoryFilter[] = exam.categories.map(
+  //         (category) => {
+  //           return {
+  //             ...category,
+  //             selected: false,
+  //           };
+  //         }
+  //       );
+  //       setCategoryFilters(categories);
+  //     }
+  //   });
+  // }, [examFilters]);
   return (
     <div className={styles.filters}>
       <FormControl component="fieldset" className={styles.formControl}>
         <FormLabel component="legend">Exams</FormLabel>
         <FormGroup>
-          {exams?.map((exam) => (
+          {examFilters?.map((exam) => (
             <FormControlLabel
               key={exam.id}
               control={
                 <Checkbox
                   color="primary"
-                  checked={currentExamFilters[exam.id]}
+                  checked={exam.selected}
                   onChange={handleExamChange}
                   name={exam.id}
                 />
@@ -50,24 +101,26 @@ const Filters: React.FC = () => {
           ))}
         </FormGroup>
       </FormControl>
-      <FormControl component="fieldset" className={styles.formControl}>
-        <FormLabel component="legend">Categories</FormLabel>
-        <FormGroup>
-          {exams?.map((exam) => (
-            <FormControlLabel
-              key={exam.id}
-              control={
-                <Checkbox
-                  checked={currentExamFilters[exam.id]}
-                  onChange={handleExamChange}
-                  name={exam.id}
-                />
-              }
-              label={exam.name}
-            />
-          ))}
-        </FormGroup>
-      </FormControl>
+      {/* {categoryFilters.length > 0 && (
+        <FormControl component="fieldset" className={styles.formControl}>
+          <FormLabel component="legend">Categories</FormLabel>
+          <FormGroup>
+            {categoryFilters?.map((category) => (
+              <FormControlLabel
+                key={category.name}
+                control={
+                  <Checkbox
+                    checked={category.selected}
+                    onChange={handleCategoryChange}
+                    name={category.name}
+                  />
+                }
+                label={category.name}
+              />
+            ))}
+          </FormGroup>
+        </FormControl>
+      )} */}
     </div>
   );
 };

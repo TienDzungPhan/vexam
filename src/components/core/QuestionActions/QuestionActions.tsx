@@ -5,10 +5,12 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
+import { IQuestion } from "@Models/Question";
 import useStyles from "./QuestionActions.styles";
 
 interface IProps {
   variant?: string;
+  question?: IQuestion;
   answered: boolean;
   selectedContent: string;
   handleReveilAnswer: () => void;
@@ -16,6 +18,7 @@ interface IProps {
 
 const Actions: React.FC<IProps> = ({
   variant,
+  question,
   answered,
   selectedContent,
   handleReveilAnswer,
@@ -35,7 +38,7 @@ const Actions: React.FC<IProps> = ({
             <Button
               startIcon={<QuestionAnswerIcon />}
               component={RouterLink}
-              to="/questions/1"
+              to={`/questions/${question?.id}`}
             >
               159 Comments
             </Button>
