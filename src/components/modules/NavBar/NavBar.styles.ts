@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme: Theme) =>
     toolbar: {
       justifyContent: "space-between",
     },
+    button: {
+      marginRight: theme.spacing(1),
+    },
   })
 );
 

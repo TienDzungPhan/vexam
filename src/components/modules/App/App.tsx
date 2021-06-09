@@ -7,6 +7,7 @@ import CreateQuestionPage from "@Pages/CreateQuestionPage";
 import QuestionPage from "@Pages/QuestionPage";
 import { useTheme } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
+import AppDialog from "@Core/AppDialog";
 import useStyles from "./App.styles";
 
 const App: React.FC = () => {
@@ -34,6 +35,7 @@ const App: React.FC = () => {
           </Switch>
         </main>
       </div>
+      <AppDialog />
     </BrowserRouter>
   );
 };
