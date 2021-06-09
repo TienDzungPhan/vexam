@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IQuestion } from "@Models/Question";
 import { Card, Divider } from "@material-ui/core";
 import QuestionContent from "@Core/QuestionContent";
@@ -6,6 +6,8 @@ import QuestionDescription from "@Core/QuestionDescription";
 import QuestionCategory from "@Core/QuestionCategory";
 import AnswersCount from "@Core/AnswersCount";
 import QuestionActions from "@Core/QuestionActions";
+import { useAuthSubscription } from "@Services/config/auth";
+import { DialogContext } from "@Contexts/DialogContext";
 import useStyles from "./Question.styles";
 
 interface IProps {
@@ -14,14 +16,20 @@ interface IProps {
 
 const Question: React.FC<IProps> = ({ question }) => {
   const styles = useStyles();
+  const { authenticated } = useAuthSubscription();
+  const { handleDialogOpen } = useContext(DialogContext);
   const [answered, setAnswered] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");
-  const handleReveilAnswer = () => {
-    setAnswered(true);
-  };
+  const handleReveilAnswer = useCallback(() => {
+    if (authenticated) setAnswered(true);
+    else handleDialogOpen("log-in")();
+  }, [authenticated, handleDialogOpen]);
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedContent(e.target.value);
   };
+  useEffect(() => {
+    if (!authenticated) setAnswered(false);
+  }, [authenticated]);
   return (
     <Card className={styles.question}>
       <QuestionCategory question={question} />

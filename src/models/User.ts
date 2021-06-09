@@ -1,13 +1,13 @@
+import firebase from "@Services/config/firebase";
+
 export interface IUser {
-  id: string;
-  firstName: string;
-  lastName: string;
-  displayName: string;
+  id?: string;
+  name: string;
   email: string;
-  phone: string;
-  exam: string;
+  phone?: string;
+  exam?: string;
   questionsCount: number;
   followersCount: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: firebase.firestore.Timestamp;
+  updatedAt: firebase.firestore.Timestamp;
 }

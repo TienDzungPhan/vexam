@@ -8,11 +8,12 @@ import {
 } from "@material-ui/core";
 import { DialogContext } from "@Contexts/DialogContext";
 import { inputValidation } from "@Helpers/validation";
+import { logInWithEmailAndPassword } from "@Services/config/auth";
 import useStyles from "./LogInDialog.styles";
 
 const LogInDialog: React.FC = () => {
   const styles = useStyles();
-  const { handleDialogOpen } = useContext(DialogContext);
+  const { handleDialogOpen, handleDialogClose } = useContext(DialogContext);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,10 +32,17 @@ const LogInDialog: React.FC = () => {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-  const handleLogIn = () => {
+  const handleLogIn = async () => {
     if (!submitAttempted) setSubmitAttempted(true);
-    // eslint-disable-next-line no-alert
-    if (formValidated) alert("Success!");
+    if (formValidated) {
+      try {
+        await logInWithEmailAndPassword(email, password);
+        handleDialogClose();
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+    }
   };
   return (
     <DialogContent className={styles.dialogContent}>

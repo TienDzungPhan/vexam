@@ -16,7 +16,7 @@ export const signUpWithEmailAndPassword = async (
   return userCredential;
 };
 
-export const signInWithEmailAndPassword = async (
+export const logInWithEmailAndPassword = async (
   email: string,
   password: string
 ): Promise<firebase.auth.UserCredential> => {
@@ -24,21 +24,21 @@ export const signInWithEmailAndPassword = async (
   return userCredential;
 };
 
-export const signOut = async (): Promise<void> => {
+export const logOut = async (): Promise<void> => {
   await auth.signOut();
 };
 
 export const useAuthSubscription = (): {
   authenticated: boolean;
-  user: firebase.User | undefined;
-  error: firebase.auth.Error | undefined;
+  user: firebase.User | null;
+  error: firebase.auth.Error | null;
 } => {
-  const [user, setUser] = useState<firebase.User>();
-  const [error, setError] = useState<firebase.auth.Error>();
+  const [user, setUser] = useState<firebase.User | null>(null);
+  const [error, setError] = useState<firebase.auth.Error | null>(null);
   const authenticated = useMemo(() => Boolean(user), [user]);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(
-      (usr) => setUser(usr || undefined),
+      (usr) => setUser(usr),
       (err) => setError(err)
     );
     return () => {
