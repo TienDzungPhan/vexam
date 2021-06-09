@@ -23,8 +23,8 @@ const NavBar: React.FC = () => {
     <AppBar position="fixed" color="transparent" className={styles.navBar}>
       <Toolbar className={styles.toolbar}>
         <Button color="inherit" component={RouterLink} to="/">
-          <Typography variant="h6" color="textPrimary" noWrap>
-            JapanExam
+          <Typography className="brand" variant="h4" color="textPrimary" noWrap>
+            Vexam
           </Typography>
         </Button>
         <SearchBar />
