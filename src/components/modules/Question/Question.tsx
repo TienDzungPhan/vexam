@@ -6,8 +6,8 @@ import QuestionDescription from "@Core/QuestionDescription";
 import QuestionCategory from "@Core/QuestionCategory";
 import AnswersCount from "@Core/AnswersCount";
 import QuestionActions from "@Core/QuestionActions";
-import { useAuthSubscription } from "@Services/config/auth";
 import { DialogContext } from "@Contexts/DialogContext";
+import { AuthContext } from "@Contexts/AuthContext";
 import useStyles from "./Question.styles";
 
 interface IProps {
@@ -16,7 +16,7 @@ interface IProps {
 
 const Question: React.FC<IProps> = ({ question }) => {
   const styles = useStyles();
-  const { authenticated } = useAuthSubscription();
+  const { authenticated } = useContext(AuthContext);
   const { handleDialogOpen } = useContext(DialogContext);
   const [answered, setAnswered] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");

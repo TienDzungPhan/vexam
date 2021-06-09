@@ -14,7 +14,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import LanguageIcon from "@material-ui/icons/Language";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import UserAvatar from "@Core/UserAvatar";
-import { logOut } from "@Services/config/auth";
+import { logOut } from "@Config/auth";
 import useStyles from "./UserSettings.styles";
 
 const UserSettings: React.FC = () => {

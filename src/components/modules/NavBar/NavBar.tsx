@@ -14,13 +14,13 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import SearchBar from "@Modules/SearchBar";
 import UserSettings from "@Modules/UserSettings";
 import { DialogContext } from "@Contexts/DialogContext";
-import { useAuthSubscription } from "@Services/config/auth";
+import { AuthContext } from "@Contexts/AuthContext";
 import useStyles from "./NavBar.styles";
 
 const NavBar: React.FC = () => {
   const styles = useStyles();
   const { handleDialogOpen } = useContext(DialogContext);
-  const { authenticated } = useAuthSubscription();
+  const { authenticated } = useContext(AuthContext);
   return (
     <AppBar position="fixed" color="transparent" className={styles.navBar}>
       <Toolbar className={styles.toolbar}>

@@ -1,4 +1,4 @@
-import firebase from "@Services/config/firebase";
+import firebase from "@Config/firebase";
 
 export interface IUser {
   id?: string;

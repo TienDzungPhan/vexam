@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { DialogContext } from "@Contexts/DialogContext";
 import { inputValidation } from "@Helpers/validation";
-import { logInWithEmailAndPassword } from "@Services/config/auth";
+import { logInWithEmailAndPassword } from "@Config/auth";
 import useStyles from "./LogInDialog.styles";
 
 const LogInDialog: React.FC = () => {

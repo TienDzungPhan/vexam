@@ -8,7 +8,7 @@ import AnswersCount from "@Core/AnswersCount";
 import QuestionActions from "@Core/QuestionActions";
 import Comments from "@Modules/Comments";
 import CommentForm from "@Modules/CommentForm";
-import { Timestamp } from "@Services/config/firestore";
+import { Timestamp } from "@Config/firestore";
 import useStyles from "./QuestionPage.styles";
 
 const question: IQuestion = {

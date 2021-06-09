@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { DialogContext } from "@Contexts/DialogContext";
 import { inputValidation, passwordConfirmation } from "@Helpers/validation";
-import { signUpWithEmailAndPassword } from "@Services/config/auth";
+import { signUpWithEmailAndPassword } from "@Config/auth";
 import { addNewUserData } from "@Services/User";
 import useStyles from "./SignUpDialog.styles";
 

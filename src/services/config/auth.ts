@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import firebase from "./firebase";
 
 const auth = firebase.auth();
@@ -29,13 +29,11 @@ export const logOut = async (): Promise<void> => {
 };
 
 export const useAuthSubscription = (): {
-  authenticated: boolean;
   user: firebase.User | null;
   error: firebase.auth.Error | null;
 } => {
   const [user, setUser] = useState<firebase.User | null>(null);
   const [error, setError] = useState<firebase.auth.Error | null>(null);
-  const authenticated = useMemo(() => Boolean(user), [user]);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(
       (usr) => setUser(usr),
@@ -45,7 +43,7 @@ export const useAuthSubscription = (): {
       unsubscribe();
     };
   }, []);
-  return { authenticated, user, error };
+  return { user, error };
 };
 
 export default auth;
