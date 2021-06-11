@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IQuestion } from "@Models/Question";
 import TwoSectionsLayout from "@Layouts/TwoSectionsLayout";
 import QuestionContent from "@Core/QuestionContent";
@@ -8,55 +8,34 @@ import AnswersCount from "@Core/AnswersCount";
 import QuestionActions from "@Core/QuestionActions";
 import Comments from "@Modules/Comments";
 import CommentForm from "@Modules/CommentForm";
-import { Timestamp } from "@Config/firestore";
+import { useParams } from "react-router-dom";
+import { getQuestionById } from "@Services/Question";
 import useStyles from "./QuestionPage.styles";
-
-const question: IQuestion = {
-  id: "1",
-  createdAt: Timestamp.fromDate(new Date("May 16, 2021 16:57:12")),
-  updatedAt: Timestamp.fromDate(new Date("May 21, 2021 16:57:12")),
-  exam: "JLPT N5",
-  author: "Dzung Phan",
-  visibility: "Public",
-  category: "Kanji Reading",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  title: "日本語は、（簡単）です。",
-  options: [
-    {
-      id: "1",
-      content: "かんたん",
-      isCorrect: true,
-    },
-    {
-      id: "2",
-      content: "かんだん",
-      isCorrect: false,
-    },
-    {
-      id: "3",
-      content: "がんたん",
-      isCorrect: false,
-    },
-    {
-      id: "4",
-      content: "がんだん",
-      isCorrect: false,
-    },
-  ],
-  explanation:
-    "Fusce ullamcorper sem felis, eleifend finibus erat pretium eget. Nam vestibulum a mi id mattis.",
-};
 
 const QuestionPage: React.FC = () => {
   const styles = useStyles();
+  const { id } = useParams<{ id: string }>();
+  const [question, setQuestion] = useState<IQuestion | null>(null);
   const [answered, setAnswered] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");
+  const loadQuestion = useCallback(async () => {
+    try {
+      const data = await getQuestionById(id);
+      setQuestion(data);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  }, [id]);
   const handleReveilAnswer = () => {
     setAnswered(true);
   };
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedContent(e.target.value);
   };
+  useEffect(() => {
+    loadQuestion();
+  }, [loadQuestion]);
   return (
     <TwoSectionsLayout
       nofixed

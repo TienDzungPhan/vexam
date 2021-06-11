@@ -1,5 +1,5 @@
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import React, { useContext, useMemo } from "react";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import {
   Button,
   Card,
@@ -9,10 +9,55 @@ import {
   MenuItem,
   TextField,
 } from "@material-ui/core";
+import { QuestionFormContext } from "@Contexts/QuestionFormContext";
+import { AuthContext } from "@Contexts/AuthContext";
+import { createNewQuestion } from "@Services/Question";
 import useStyles from "./FormActions.styles";
 
 const FormActions: React.FC = () => {
   const styles = useStyles();
+  const history = useHistory();
+  const {
+    selectedExam,
+    selectedCategory,
+    description,
+    title,
+    options,
+    explanation,
+    visibility,
+    handleVisibilityChange,
+  } = useContext(QuestionFormContext);
+  const { userData } = useContext(AuthContext);
+  const questionData = useMemo(() => {
+    return {
+      author: { id: userData?.id || "", name: userData?.name || "" },
+      exam: { id: selectedExam?.id || "", name: selectedExam?.name || "" },
+      category: selectedCategory?.name || "",
+      description,
+      title,
+      options,
+      explanation,
+      visibility,
+    };
+  }, [
+    description,
+    explanation,
+    options,
+    selectedCategory,
+    selectedExam,
+    title,
+    userData,
+    visibility,
+  ]);
+  const handleQuestionCreate = async () => {
+    try {
+      const newQuestionRef = await createNewQuestion(questionData);
+      history.push(`/questions/${newQuestionRef.id}`);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
   return (
     <Card>
       <CardHeader title="Post" />
@@ -23,8 +68,8 @@ const FormActions: React.FC = () => {
           variant="outlined"
           label="Visibility"
           fullWidth
-          // value={currency}
-          // onChange={handleChange}
+          value={visibility}
+          onChange={handleVisibilityChange}
         >
           <MenuItem value="public">Public</MenuItem>
           <MenuItem value="private">Private</MenuItem>
@@ -34,7 +79,11 @@ const FormActions: React.FC = () => {
         <Button component={RouterLink} to="/">
           Cancel
         </Button>
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleQuestionCreate}
+        >
           Post
         </Button>
       </CardActions>

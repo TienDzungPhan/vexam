@@ -3,13 +3,27 @@ import firebase from "./config/firebase";
 import db, {
   getMultipleDocuments,
   getSingleDocument,
+  Timestamp,
   useDocumentSubscription,
   useQuerySubscription,
 } from "./config/firestore";
 
+type TQuestionData = Pick<
+  IQuestion,
+  | "author"
+  | "exam"
+  | "category"
+  | "description"
+  | "title"
+  | "options"
+  | "explanation"
+  | "visibility"
+  | "contextId"
+>;
+
 const questionsDB = db.collection("questions");
 
-export const getQuestion = async (id: string): Promise<IQuestion> => {
+export const getQuestionById = async (id: string): Promise<IQuestion> => {
   const data = await getSingleDocument("questions", id);
   return data as IQuestion;
 };
@@ -35,6 +49,20 @@ export const useQuestionQuerySubscription = (
   const [latestData, error] = useQuerySubscription(ref);
   const querySnapshot = latestData as IQuestion[] | null;
   return [querySnapshot, error];
+};
+
+export const createNewQuestion = async (
+  data: TQuestionData
+): Promise<
+  firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
+> => {
+  const newQuestionRef = await questionsDB.add({
+    ...data,
+    answerCount: 0,
+    createdAt: Timestamp.fromDate(new Date()),
+    updatedAt: Timestamp.fromDate(new Date()),
+  });
+  return newQuestionRef;
 };
 
 export default questionsDB;

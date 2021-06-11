@@ -16,7 +16,7 @@ import useStyles from "./QuestionDescription.styles";
 
 interface IProps {
   variant?: string;
-  question: IQuestion;
+  question: IQuestion | null;
 }
 
 const Description: React.FC<IProps> = ({ variant, question }) => {
@@ -35,13 +35,17 @@ const Description: React.FC<IProps> = ({ variant, question }) => {
         title={
           <>
             <Typography component="span" variant="body1">
-              <Link color="inherit" component={RouterLink} to="/profile/1">
-                Dzung Phan
+              <Link
+                color="inherit"
+                component={RouterLink}
+                to={`/profile/${question?.author.id}`}
+              >
+                {question?.author.name}
               </Link>
             </Typography>
             ・
             <Typography component="span" variant="caption">
-              {timePast(question?.updatedAt.toDate())}
+              {timePast(question?.updatedAt.toDate() || new Date())}
             </Typography>
           </>
         }

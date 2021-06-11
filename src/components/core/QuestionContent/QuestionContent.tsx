@@ -6,7 +6,7 @@ import useStyles from "./QuestionContent.styles";
 
 interface IProps {
   variant?: string;
-  question: IQuestion;
+  question: IQuestion | null;
   answered: boolean;
   selectedContent: string;
   handleOptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -33,7 +33,7 @@ const Content: React.FC<IProps> = ({
       >
         {question?.options.map((option) => (
           <Option
-            key={option.id}
+            key={option.content}
             option={option}
             selectedContent={selectedContent}
             answered={answered}

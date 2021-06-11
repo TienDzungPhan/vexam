@@ -38,7 +38,7 @@ const Actions: React.FC<IProps> = ({
             <Button
               startIcon={<QuestionAnswerIcon />}
               component={RouterLink}
-              to={`/questions/${question?.id}`}
+              to={`/questions/${question?.id || ""}`}
             >
               159 Comments
             </Button>

@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useEffect, useMemo } from "react";
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  useMemo,
+  useContext,
+} from "react";
 import {
   Card,
   CardContent,
@@ -14,21 +20,33 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import { TOption } from "@Models/Question";
 import OptionForm from "@Core/OptionForm";
 import { IExam, TCategory } from "@Models/Exam";
 import { getExams } from "@Services/Exam";
+import { QuestionFormContext } from "@Contexts/QuestionFormContext";
 import useStyles from "./QuestionForm.styles";
 
 const QuestionForm: React.FC = () => {
   const styles = useStyles();
   const [exams, setExams] = useState<IExam[]>([]);
-  const [selectedExam, setSelectedExam] = useState<IExam>();
-  const [selectedCategory, setSelectedCategory] = useState<TCategory>();
-  const [options, setOptions] = useState([
-    { id: "1", content: "", isCorrect: false },
-    { id: "2", content: "", isCorrect: false },
-  ] as TOption[]);
+  const {
+    selectedExam,
+    selectedCategory,
+    description,
+    title,
+    options,
+    explanation,
+    optionDisabled,
+    selectExam,
+    selectCategory,
+    handleDescriptionChange,
+    handleTitleChange,
+    handleOptionContentChange,
+    handleOptionSelect,
+    handleOptionCreate,
+    handleOptionDelete,
+    handleExplanationChange,
+  } = useContext(QuestionFormContext);
   const loadExams = useCallback(async () => {
     try {
       const examsData = await getExams();
@@ -43,51 +61,14 @@ const QuestionForm: React.FC = () => {
     [selectedExam]
   );
   const handleExamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetExam = exams?.find((exam) => exam.id === e.target.value);
-    setSelectedExam(targetExam);
+    const targetExam =
+      exams?.find((exam) => exam.id === e.target.value) || null;
+    selectExam(targetExam);
   };
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetCategory = categories?.find(
-      (category) => category.name === e.target.value
-    );
-    setSelectedCategory(targetCategory);
-  };
-  const handleChangeOptionContent =
-    (id: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newOptions = options.map((option) => {
-        const newOption = option;
-        newOption.isCorrect = false;
-        if (option.id === id) newOption.content = e.target.value;
-        return newOption;
-      });
-      setOptions(newOptions);
-    };
-  const handleSelectOption = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newOptions = options.map((option) => {
-      const newOption = option;
-      if (option.id === e.target.value) newOption.isCorrect = true;
-      else newOption.isCorrect = false;
-      return newOption;
-    });
-    setOptions(newOptions);
-  };
-  const handleAddOption = () => {
-    setOptions([
-      ...options,
-      { id: (options.length + 1).toString(), content: "", isCorrect: false },
-    ]);
-  };
-  const handleDeleteOption = (index: number) => () => {
-    const targetOption = options[index];
-    setOptions(options.filter((option) => option.id !== targetOption.id));
-  };
-  const optionDisabled = (option: TOption) => {
-    const isBlank = !option.content;
-    const isDuplicated =
-      options.filter(
-        (currentOption) => currentOption.content === option.content
-      ).length > 1;
-    return isBlank || isDuplicated;
+    const targetCategory =
+      categories?.find((category) => category.name === e.target.value) || null;
+    selectCategory(targetCategory);
   };
   useEffect(() => {
     loadExams();
@@ -103,13 +84,11 @@ const QuestionForm: React.FC = () => {
             label="Exam"
             fullWidth
             className={styles.select}
-            value={selectedExam?.id}
+            value={selectedExam?.id || ""}
             onChange={handleExamChange}
             required
           >
-            <MenuItem value={undefined} disabled>
-              --Select an Exam-
-            </MenuItem>
+            <MenuItem disabled>--Select an Exam-</MenuItem>
             {exams?.map((exam) => (
               <MenuItem key={exam.id} value={exam.id}>
                 {exam.name}
@@ -125,13 +104,11 @@ const QuestionForm: React.FC = () => {
             label="Category"
             fullWidth
             className={styles.select}
-            value={selectedCategory?.name}
+            value={selectedCategory?.name || ""}
             onChange={handleCategoryChange}
             required
           >
-            <MenuItem value={undefined} disabled>
-              --Select a Category--
-            </MenuItem>
+            <MenuItem disabled>--Select a Category--</MenuItem>
             {categories?.map((category) => (
               <MenuItem key={category.name} value={category.name}>
                 {category.name}
@@ -151,6 +128,8 @@ const QuestionForm: React.FC = () => {
             fullWidth
             variant="outlined"
             className={styles.input}
+            value={description}
+            onChange={handleDescriptionChange}
             required
           />
           <TextField
@@ -161,6 +140,8 @@ const QuestionForm: React.FC = () => {
             fullWidth
             variant="outlined"
             className={styles.input}
+            value={title}
+            onChange={handleTitleChange}
             required
           />
           <List
@@ -178,7 +159,7 @@ const QuestionForm: React.FC = () => {
                     name="options"
                     checked={option.isCorrect}
                     value={option.id}
-                    onChange={handleSelectOption}
+                    onChange={handleOptionSelect}
                     disabled={optionDisabled(option)}
                   />
                 </ListItemIcon>
@@ -187,8 +168,8 @@ const QuestionForm: React.FC = () => {
                     <OptionForm
                       option={option}
                       index={index}
-                      handleChangeOptionContent={handleChangeOptionContent}
-                      handleDeleteOption={handleDeleteOption}
+                      handleOptionContentChange={handleOptionContentChange}
+                      handleOptionDelete={handleOptionDelete}
                     />
                   }
                   secondary={
@@ -201,7 +182,7 @@ const QuestionForm: React.FC = () => {
                 />
               </ListItem>
             ))}
-            <ListItem button onClick={handleAddOption}>
+            <ListItem button onClick={handleOptionCreate}>
               <ListItemIcon>
                 <AddIcon />
               </ListItemIcon>
@@ -216,6 +197,8 @@ const QuestionForm: React.FC = () => {
             fullWidth
             variant="outlined"
             className={styles.input}
+            value={explanation}
+            onChange={handleExplanationChange}
             required
           />
         </CardContent>

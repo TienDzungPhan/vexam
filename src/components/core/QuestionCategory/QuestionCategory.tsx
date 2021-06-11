@@ -5,7 +5,7 @@ import useStyles from "./QuestionCategory.styles";
 
 interface IProps {
   variant?: string;
-  question: IQuestion;
+  question: IQuestion | null;
 }
 
 const QuestionCategory: React.FC<IProps> = ({ variant, question }) => {
@@ -20,7 +20,7 @@ const QuestionCategory: React.FC<IProps> = ({ variant, question }) => {
         disableElevation
         className={styles.upperButton}
       >
-        <Typography noWrap>JLPT N5</Typography>
+        <Typography noWrap>{question?.exam.name}</Typography>
       </Button>
       <Button
         variant="contained"
