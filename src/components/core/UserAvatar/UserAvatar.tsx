@@ -1,16 +1,16 @@
 import React, { useMemo } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import clsx from "clsx";
-import avatar from "@Images/avatar.jpg";
 import { Avatar } from "@material-ui/core";
 import useStyles from "./UserAvatar.styles";
 
 interface IProps {
+  name?: string;
   avatarUrl?: string;
   size?: string;
 }
 
-const UserAvatar: React.FC<IProps> = ({ avatarUrl, size }) => {
+const UserAvatar: React.FC<IProps> = ({ name, avatarUrl, size }) => {
   const styles = useStyles();
   const classes = useMemo(() => {
     const classList = [styles.avatar];
@@ -30,7 +30,12 @@ const UserAvatar: React.FC<IProps> = ({ avatarUrl, size }) => {
     }
     return clsx(classList);
   }, [size, styles]);
-  return <Avatar alt="Avatar" src={avatarUrl || avatar} className={classes} />;
+  const initial = useMemo(() => name && name[0].toUpperCase(), [name]);
+  return avatarUrl ? (
+    <Avatar alt="Avatar" src={avatarUrl} className={classes} />
+  ) : (
+    <Avatar className={classes}>{initial}</Avatar>
+  );
 };
 
 export default UserAvatar;

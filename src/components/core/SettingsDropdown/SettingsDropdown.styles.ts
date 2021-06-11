@@ -8,16 +8,6 @@ const useStyles = makeStyles((theme: Theme) =>
     popover: {
       padding: theme.spacing(2),
     },
-    rightDrawer: {
-      "& .MuiDrawer-paper": {
-        width: "70%",
-      },
-    },
-    userInfo: {
-      padding: theme.spacing(2),
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
   })
 );
 
