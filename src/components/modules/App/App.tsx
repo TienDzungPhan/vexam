@@ -15,7 +15,7 @@ import useStyles from "./App.styles";
 
 const App: React.FC = () => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const styles = useStyles({ isDesktop });
   const { user } = useAuthSubscription();
   const { handleUserChange } = useContext(AuthContext);

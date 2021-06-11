@@ -54,6 +54,8 @@ const Actions: React.FC<IProps> = ({
         </>
       ) : (
         <Button
+          color={isDetailedVariant ? "primary" : undefined}
+          variant={isDetailedVariant ? "contained" : undefined}
           startIcon={<VisibilityIcon />}
           size={isDetailedVariant ? "large" : "medium"}
           fullWidth

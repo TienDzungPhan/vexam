@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Checkbox,
+  Divider,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormLabel,
+  Typography,
 } from "@material-ui/core";
 import examsDB from "@Services/Exam";
 import {
@@ -17,11 +19,15 @@ interface IExamFilter extends IExam {
   selected: boolean;
 }
 
+interface IProps {
+  variant?: "drawer";
+}
+
 // interface ICategoryFilter extends TCategory {
 //   selected: boolean;
 // }
 
-const Filters: React.FC = () => {
+const Filters: React.FC<IProps> = ({ variant }) => {
   const styles = useStyles();
   const [examFilters, setExamFilters] = useState<IExamFilter[]>();
   // const [categoryFilters, setCategoryFilters] = useState(
@@ -82,6 +88,12 @@ const Filters: React.FC = () => {
   // }, [examFilters]);
   return (
     <div className={styles.filters}>
+      {variant === "drawer" && (
+        <>
+          <Typography variant="h5">Filters</Typography>
+          <Divider variant="middle" />
+        </>
+      )}
       <FormControl component="fieldset" className={styles.formControl}>
         <FormLabel component="legend">Exams</FormLabel>
         <FormGroup>
