@@ -11,7 +11,11 @@ import {
 } from "@material-ui/core";
 import { QuestionFormContext } from "@Contexts/QuestionFormContext";
 import { AuthContext } from "@Contexts/AuthContext";
-import { createNewQuestion, updateQuestion } from "@Services/Question";
+import {
+  createNewQuestion,
+  deleteQuestion,
+  updateQuestion,
+} from "@Services/Question";
 import useStyles from "./FormActions.styles";
 
 const FormActions: React.FC = () => {
@@ -69,6 +73,15 @@ const FormActions: React.FC = () => {
       console.log(error);
     }
   };
+  const handleQuestionDelete = async () => {
+    try {
+      await deleteQuestion(questionId || "");
+      history.push("/");
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
   return (
     <Card>
       <CardHeader title="Post" />
@@ -90,6 +103,15 @@ const FormActions: React.FC = () => {
         <Button component={RouterLink} to="/">
           Cancel
         </Button>
+        {questionId && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleQuestionDelete}
+          >
+            Delete
+          </Button>
+        )}
         <Button
           variant="contained"
           color="primary"

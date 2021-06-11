@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IQuestion } from "@Models/Question";
 import TwoSectionsLayout from "@Layouts/TwoSectionsLayout";
 import QuestionContent from "@Core/QuestionContent";
@@ -10,11 +10,15 @@ import Comments from "@Modules/Comments";
 import CommentForm from "@Modules/CommentForm";
 import { useParams } from "react-router-dom";
 import { getQuestionById } from "@Services/Question";
+import { AuthContext } from "@Contexts/AuthContext";
+import { DialogContext } from "@Contexts/DialogContext";
 import useStyles from "./QuestionPage.styles";
 
 const QuestionPage: React.FC = () => {
   const styles = useStyles();
   const { id } = useParams<{ id: string }>();
+  const { authenticated } = useContext(AuthContext);
+  const { handleDialogOpen } = useContext(DialogContext);
   const [question, setQuestion] = useState<IQuestion | null>(null);
   const [answered, setAnswered] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");
@@ -27,15 +31,19 @@ const QuestionPage: React.FC = () => {
       console.log(error);
     }
   }, [id]);
-  const handleReveilAnswer = () => {
-    setAnswered(true);
-  };
+  const handleReveilAnswer = useCallback(() => {
+    if (authenticated) setAnswered(true);
+    else handleDialogOpen("log-in")();
+  }, [authenticated, handleDialogOpen]);
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedContent(e.target.value);
   };
   useEffect(() => {
     loadQuestion();
   }, [loadQuestion]);
+  useEffect(() => {
+    if (!authenticated) setAnswered(false);
+  }, [authenticated]);
   return (
     <TwoSectionsLayout
       nofixed
@@ -53,6 +61,7 @@ const QuestionPage: React.FC = () => {
             <AnswersCount variant="detailed" />
             <QuestionActions
               variant="detailed"
+              question={question}
               answered={answered}
               selectedContent={selectedContent}
               handleReveilAnswer={handleReveilAnswer}
