@@ -6,29 +6,29 @@ import { TOption } from "@Models/Question";
 interface IProps {
   option: TOption;
   index: number;
-  handleChangeOptionContent: (
+  handleOptionContentChange: (
     id: string
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDeleteOption: (index: number) => () => void;
+  handleOptionDelete: (id: string) => () => void;
 }
 
 const OptionForm: React.FC<IProps> = ({
   option,
   index,
-  handleChangeOptionContent,
-  handleDeleteOption,
+  handleOptionContentChange,
+  handleOptionDelete,
 }) => {
   return (
     <OutlinedInput
-      id={`option-${index}`}
+      id={`option-${option?.id}`}
       type="text"
       fullWidth
       value={option?.content}
-      onChange={handleChangeOptionContent(option?.id)}
+      onChange={handleOptionContentChange(option?.id)}
       endAdornment={
         <InputAdornment position="end">
           {index >= 2 && (
-            <IconButton onClick={handleDeleteOption(index)}>
+            <IconButton onClick={handleOptionDelete(option?.id)}>
               <DeleteIcon />
             </IconButton>
           )}

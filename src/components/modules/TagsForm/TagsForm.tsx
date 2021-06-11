@@ -51,6 +51,7 @@ const TagsForm: React.FC = () => {
         <FormGroup>
           {Object.keys(tagOptions)?.map((label) => (
             <FormControlLabel
+              key={label}
               control={
                 <Checkbox
                   color="primary"

@@ -5,16 +5,12 @@ import Biography from "@Modules/Biography";
 import Filters from "@Modules/Filters";
 import Question from "@Modules/Question";
 import Performance from "@Modules/Performance";
-import questionsDB from "@Services/Question";
+import { getQuestions } from "@Services/Question";
 
 const ProfilePage: React.FC = () => {
-  const [questions, setQuestions] = useState([] as IQuestion[]);
+  const [questions, setQuestions] = useState<IQuestion[]>([]);
   const loadQuestions = useCallback(async () => {
-    const questionsSnapshot = await questionsDB.get();
-    const questionsData = [] as IQuestion[];
-    questionsSnapshot.forEach((doc) => {
-      questionsData.push({ id: doc.id, ...doc.data() } as IQuestion);
-    });
+    const questionsData = await getQuestions();
     setQuestions(questionsData);
   }, []);
   useEffect(() => {

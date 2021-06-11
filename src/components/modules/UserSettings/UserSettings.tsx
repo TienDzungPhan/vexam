@@ -14,24 +14,30 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import LanguageIcon from "@material-ui/icons/Language";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import UserAvatar from "@Core/UserAvatar";
+import { logOut } from "@Config/auth";
 import useStyles from "./UserSettings.styles";
 
 const UserSettings: React.FC = () => {
   const styles = useStyles();
   const currentUser = { username: "Dzung Phan" };
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
+  const open = Boolean(anchorEl);
+  const id = open ? "user-settings-popover" : undefined;
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "user-settings-popover" : undefined;
-
+  const handleLogOut = async () => {
+    handleClose();
+    try {
+      await logOut();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
   return (
     <>
       <Button
@@ -80,7 +86,7 @@ const UserSettings: React.FC = () => {
         </List>
         <Divider />
         <List>
-          <ListItem button onClick={handleClose}>
+          <ListItem button onClick={handleLogOut}>
             <ListItemIcon>
               <ExitToAppIcon />
             </ListItemIcon>
