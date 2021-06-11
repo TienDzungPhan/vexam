@@ -8,11 +8,13 @@ import {
 } from "@material-ui/core";
 import { DialogContext } from "@Contexts/DialogContext";
 import { inputValidation, passwordConfirmation } from "@Helpers/validation";
+import { signUpWithEmailAndPassword } from "@Config/auth";
+import { addNewUserData } from "@Services/User";
 import useStyles from "./SignUpDialog.styles";
 
 const SignUpDialog: React.FC = () => {
   const styles = useStyles();
-  const { handleDialogOpen } = useContext(DialogContext);
+  const { handleDialogOpen, handleDialogClose } = useContext(DialogContext);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -50,10 +52,18 @@ const SignUpDialog: React.FC = () => {
   ) => {
     setPasswordConfirm(e.target.value);
   };
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!submitAttempted) setSubmitAttempted(true);
-    // eslint-disable-next-line no-alert
-    if (formValidated) alert("Success!");
+    if (formValidated) {
+      try {
+        const cred = await signUpWithEmailAndPassword(email, password);
+        await addNewUserData(cred.user?.uid || "", { name, email });
+        handleDialogClose();
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+    }
   };
   return (
     <DialogContent className={styles.dialogContent}>

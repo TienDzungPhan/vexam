@@ -38,7 +38,7 @@ const comments: IComment[] = [
   },
 ];
 interface IProps {
-  question: IQuestion;
+  question: IQuestion | null;
 }
 
 const Comments: React.FC<IProps> = () => {

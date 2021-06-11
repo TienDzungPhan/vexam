@@ -11,12 +11,22 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import LanguageIcon from "@material-ui/icons/Language";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 // import UserAvatar from "@Core/UserAvatar";
+import { logOut } from "@Config/auth";
 
 interface IProps {
   closeSettings: () => void;
 }
 
 const SettingsList: React.FC<IProps> = ({ closeSettings }) => {
+  const handleLogOut = async () => {
+    closeSettings();
+    try {
+      await logOut();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
   return (
     <>
       <List>
@@ -40,7 +50,7 @@ const SettingsList: React.FC<IProps> = ({ closeSettings }) => {
       </List>
       <Divider variant="middle" />
       <List>
-        <ListItem button onClick={closeSettings}>
+        <ListItem button onClick={handleLogOut}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

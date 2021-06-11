@@ -8,18 +8,14 @@ import Performance from "@Modules/Performance";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import FiltersDrawer from "@Modules/FiltersDrawer";
-import questionsDB from "@Services/Question";
+import { getQuestions } from "@Services/Question";
 
 const ProfilePage: React.FC = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const [questions, setQuestions] = useState([] as IQuestion[]);
   const loadQuestions = useCallback(async () => {
-    const questionsSnapshot = await questionsDB.get();
-    const questionsData = [] as IQuestion[];
-    questionsSnapshot.forEach((doc) => {
-      questionsData.push({ id: doc.id, ...doc.data() } as IQuestion);
-    });
+    const questionsData = await getQuestions();
     setQuestions(questionsData);
   }, []);
   useEffect(() => {

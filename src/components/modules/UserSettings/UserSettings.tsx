@@ -18,14 +18,14 @@ const SettingsDropdown: React.FC = () => {
   const styles = useStyles();
   const currentUser = { username: "Dzung Phan" };
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
+  const id = open ? "user-settings-popover" : undefined;
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const open = Boolean(anchorEl);
-  const id = open ? "user-settings-popover" : undefined;
   return (
     <>
       <Button

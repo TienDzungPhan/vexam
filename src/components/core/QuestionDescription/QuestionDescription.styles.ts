@@ -4,6 +4,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     header: {
       paddingBottom: 0,
+      "& .MuiCardHeader-action": {
+        alignSelf: "center",
+      },
     },
     description: {
       paddingTop: theme.spacing(1),

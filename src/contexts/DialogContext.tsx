@@ -9,13 +9,9 @@ interface IDialogContext {
   handleDialogClose: () => void;
 }
 
-interface IProps {
-  children: JSX.Element;
-}
-
 export const DialogContext = createContext({} as IDialogContext);
 
-const DialogProvider: React.FC<IProps> = ({ children }) => {
+const DialogProvider: React.FC = ({ children }) => {
   const [dialogOpened, setDiaglogOpened] = useState(false);
   const [dialogType, setDiaglogContent] = useState<TDialogType>("log-in");
   const handleDialogOpen = (content: TDialogType) => () => {
