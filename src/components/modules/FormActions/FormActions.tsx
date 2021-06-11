@@ -11,15 +11,16 @@ import {
 } from "@material-ui/core";
 import { QuestionFormContext } from "@Contexts/QuestionFormContext";
 import { AuthContext } from "@Contexts/AuthContext";
-import { createNewQuestion } from "@Services/Question";
+import { createNewQuestion, updateQuestion } from "@Services/Question";
 import useStyles from "./FormActions.styles";
 
 const FormActions: React.FC = () => {
   const styles = useStyles();
   const history = useHistory();
   const {
+    questionId,
     selectedExam,
-    selectedCategory,
+    selectedCategoryName,
     description,
     title,
     options,
@@ -30,9 +31,8 @@ const FormActions: React.FC = () => {
   const { userData } = useContext(AuthContext);
   const questionData = useMemo(() => {
     return {
-      author: { id: userData?.id || "", name: userData?.name || "" },
       exam: { id: selectedExam?.id || "", name: selectedExam?.name || "" },
-      category: selectedCategory?.name || "",
+      category: selectedCategoryName,
       description,
       title,
       options,
@@ -43,16 +43,27 @@ const FormActions: React.FC = () => {
     description,
     explanation,
     options,
-    selectedCategory,
+    selectedCategoryName,
     selectedExam,
     title,
-    userData,
     visibility,
   ]);
   const handleQuestionCreate = async () => {
     try {
-      const newQuestionRef = await createNewQuestion(questionData);
+      const newQuestionRef = await createNewQuestion({
+        ...questionData,
+        author: { id: userData?.id || "", name: userData?.name || "" },
+      });
       history.push(`/questions/${newQuestionRef.id}`);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
+  const handleQuestionUpdate = async () => {
+    try {
+      await updateQuestion(questionId || "", questionData);
+      history.push(`/questions/${questionId}`);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -82,9 +93,9 @@ const FormActions: React.FC = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleQuestionCreate}
+          onClick={questionId ? handleQuestionUpdate : handleQuestionCreate}
         >
-          Post
+          {questionId ? "Save" : "Post"}
         </Button>
       </CardActions>
     </Card>

@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useState,
-  useEffect,
-  useMemo,
-  useContext,
-} from "react";
+import React, { useMemo, useContext } from "react";
 import {
   Card,
   CardContent,
@@ -21,17 +15,16 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import OptionForm from "@Core/OptionForm";
-import { IExam, TCategory } from "@Models/Exam";
-import { getExams } from "@Services/Exam";
+import { TCategory } from "@Models/Exam";
 import { QuestionFormContext } from "@Contexts/QuestionFormContext";
 import useStyles from "./QuestionForm.styles";
 
 const QuestionForm: React.FC = () => {
   const styles = useStyles();
-  const [exams, setExams] = useState<IExam[]>([]);
   const {
+    exams,
     selectedExam,
-    selectedCategory,
+    selectedCategoryName,
     description,
     title,
     options,
@@ -47,15 +40,6 @@ const QuestionForm: React.FC = () => {
     handleOptionDelete,
     handleExplanationChange,
   } = useContext(QuestionFormContext);
-  const loadExams = useCallback(async () => {
-    try {
-      const examsData = await getExams();
-      setExams(examsData);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  }, []);
   const categories = useMemo(
     () => selectedExam?.categories || ([] as TCategory[]),
     [selectedExam]
@@ -66,13 +50,8 @@ const QuestionForm: React.FC = () => {
     selectExam(targetExam);
   };
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetCategory =
-      categories?.find((category) => category.name === e.target.value) || null;
-    selectCategory(targetCategory);
+    selectCategory(e.target.value);
   };
-  useEffect(() => {
-    loadExams();
-  }, [loadExams]);
   return (
     <div>
       <Grid container spacing={3}>
@@ -104,7 +83,7 @@ const QuestionForm: React.FC = () => {
             label="Category"
             fullWidth
             className={styles.select}
-            value={selectedCategory?.name || ""}
+            value={selectedCategoryName}
             onChange={handleCategoryChange}
             required
           >

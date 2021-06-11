@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import NavBar from "@Modules/NavBar";
 import HomePage from "@Pages/HomePage";
 import ProfilePage from "@Pages/ProfilePage";
-import CreateQuestionPage from "@Pages/CreateQuestionPage";
+import QuestionModifyPage from "@Pages/QuestionModifyPage";
 import QuestionPage from "@Pages/QuestionPage";
 import { useTheme } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
@@ -33,9 +33,14 @@ const App: React.FC = () => {
             <PrivateRoute
               exact
               path="/questions/create"
-              component={CreateQuestionPage}
+              component={QuestionModifyPage}
             />
             <Route exact path="/questions/:id" component={QuestionPage} />
+            <Route
+              exact
+              path="/questions/:id/update"
+              component={QuestionModifyPage}
+            />
           </Switch>
         </main>
       </div>

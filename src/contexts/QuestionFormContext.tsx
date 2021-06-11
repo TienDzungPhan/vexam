@@ -1,11 +1,15 @@
-import React, { createContext, useState } from "react";
-import { IExam, TCategory } from "@Models/Exam";
-import { TOption } from "@Models/Question";
+import React, { createContext, useCallback, useEffect, useState } from "react";
+import { IExam } from "@Models/Exam";
+import { IQuestion, TOption } from "@Models/Question";
 import { v4 as uuidv4 } from "uuid";
+import { getQuestionById } from "@Services/Question";
+import { getExams } from "@Services/Exam";
 
 interface IQuestionFormContext {
+  questionId?: string;
+  exams: IExam[];
   selectedExam: IExam | null;
-  selectedCategory: TCategory | null;
+  selectedCategoryName: string;
   description: string;
   title: string;
   options: TOption[];
@@ -13,7 +17,7 @@ interface IQuestionFormContext {
   visibility: "public" | "private";
   optionDisabled: (option: TOption) => boolean;
   selectExam: (exam: IExam | null) => void;
-  selectCategory: (category: TCategory | null) => void;
+  selectCategory: (categoryName: string) => void;
   handleDescriptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleOptionContentChange: (
@@ -26,12 +30,17 @@ interface IQuestionFormContext {
   handleVisibilityChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+interface IProps {
+  questionId?: string;
+}
+
 export const QuestionFormContext = createContext({} as IQuestionFormContext);
 
-const QuestionFormProvider: React.FC = ({ children }) => {
+const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
+  const [exams, setExams] = useState<IExam[]>([]);
+  const [question, setQuestion] = useState<IQuestion>();
   const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
-  const [selectedCategory, setSelectedCategory] =
-    useState<TCategory | null>(null);
+  const [selectedCategoryName, setSelectedCategoryName] = useState("");
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
   const [options, setOptions] = useState<TOption[]>([
@@ -40,11 +49,31 @@ const QuestionFormProvider: React.FC = ({ children }) => {
   ]);
   const [explanation, setExplanation] = useState("");
   const [visibility, setVisibility] = useState<"public" | "private">("public");
+  const loadExams = useCallback(async () => {
+    try {
+      const examsData = await getExams();
+      setExams(examsData);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  }, []);
+  const loadQuestion = useCallback(async () => {
+    if (questionId) {
+      try {
+        const data = await getQuestionById(questionId);
+        setQuestion(data);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+    }
+  }, [questionId]);
   const selectExam = (exam: IExam | null) => {
     setSelectedExam(exam);
   };
-  const selectCategory = (category: TCategory | null) => {
-    setSelectedCategory(category);
+  const selectCategory = (categoryName: string) => {
+    setSelectedCategoryName(categoryName);
   };
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
@@ -99,11 +128,30 @@ const QuestionFormProvider: React.FC = ({ children }) => {
   const handleVisibilityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVisibility(e.target.value as "public" | "private");
   };
+  useEffect(() => {
+    loadExams();
+    loadQuestion();
+  }, [loadExams, loadQuestion]);
+  useEffect(() => {
+    if (question) {
+      setSelectedExam(
+        exams.find((exam) => exam.id === question.exam.id) || null
+      );
+      setSelectedCategoryName(question.category);
+      setDescription(question.description || "");
+      setTitle(question.title);
+      setOptions(question.options);
+      setExplanation(question.explanation);
+      setVisibility(question.visibility);
+    }
+  }, [exams, question]);
   return (
     <QuestionFormContext.Provider
       value={{
+        questionId,
+        exams,
         selectedExam,
-        selectedCategory,
+        selectedCategoryName,
         description,
         title,
         options,

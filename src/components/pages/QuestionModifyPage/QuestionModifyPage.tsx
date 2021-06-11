@@ -1,15 +1,17 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import TwoSectionsLayout from "@Layouts/TwoSectionsLayout";
 import FormActions from "@Modules/FormActions";
 import QuestionForm from "@Modules/QuestionForm";
 import TagsForm from "@Modules/TagsForm";
 import QuestionFormProvider from "@Contexts/QuestionFormContext";
 
-const CreateQuestionPage: React.FC = () => {
+const QuestionModifyPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   return (
-    <QuestionFormProvider>
+    <QuestionFormProvider questionId={id}>
       <TwoSectionsLayout
-        title="Create Question"
+        title={id ? "Edit Question " : "Create Question"}
         main={<QuestionForm />}
         right={
           <>
@@ -22,4 +24,4 @@ const CreateQuestionPage: React.FC = () => {
   );
 };
 
-export default CreateQuestionPage;
+export default QuestionModifyPage;

@@ -65,4 +65,18 @@ export const createNewQuestion = async (
   return newQuestionRef;
 };
 
+export const updateQuestion = async (
+  id: string,
+  data: Omit<TQuestionData, "author">
+): Promise<void> => {
+  await questionsDB.doc(id).update({
+    ...data,
+    updatedAt: Timestamp.fromDate(new Date()),
+  });
+};
+
+export const deleteQuestion = async (id: string): Promise<void> => {
+  await questionsDB.doc(id).delete();
+};
+
 export default questionsDB;
