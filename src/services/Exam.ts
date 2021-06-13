@@ -9,7 +9,7 @@ import db, {
 
 const examsDB = db.collection("exams");
 
-export const getExam = async (id: string): Promise<IExam> => {
+export const getExamById = async (id: string): Promise<IExam> => {
   const data = await getSingleDocument("exams", id);
   return data as IExam;
 };
