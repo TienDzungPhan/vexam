@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import UserAvatar from "@Core/UserAvatar";
 import {
   Button,
@@ -32,7 +33,7 @@ const UserHeadline: React.FC<IProps> = ({ isCurrentUser, userData }) => {
         }
         action={
           isCurrentUser ? (
-            <IconButton>
+            <IconButton component={RouterLink} to="/settings">
               <SettingsIcon />
             </IconButton>
           ) : (

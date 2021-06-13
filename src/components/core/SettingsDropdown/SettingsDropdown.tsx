@@ -56,7 +56,7 @@ const SettingsDropdown: React.FC<IProps> = ({ user, userData }) => {
         }}
         className={styles.popover}
       >
-        <SettingsList closeSettings={handleClose} />
+        <SettingsList userData={userData} closeSettings={handleClose} />
       </Popover>
     </>
   );

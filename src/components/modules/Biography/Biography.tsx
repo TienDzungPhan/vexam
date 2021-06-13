@@ -24,8 +24,7 @@ const Biography: React.FC<IProps> = ({ userData }) => {
       <CardContent className={styles.content}>
         {userData?.about && (
           <Typography variant="body2" color="textSecondary" component="p">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda,
-            quibusdam earum molestias commodi tenetur deserunt suscipit vitae.
+            {userData.about}
           </Typography>
         )}
       </CardContent>

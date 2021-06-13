@@ -50,7 +50,7 @@ const SettingsDrawer: React.FC<IProps> = ({ user, userData }) => {
           <Typography variant="h6">{userData?.name}</Typography>
         </div>
         <Divider variant="middle" />
-        <SettingsList closeSettings={handleClose} />
+        <SettingsList userData={userData} closeSettings={handleClose} />
       </SwipeableDrawer>
     </>
   );

@@ -5,6 +5,7 @@ import HomePage from "@Pages/HomePage";
 import ProfilePage from "@Pages/ProfilePage";
 import QuestionModifyPage from "@Pages/QuestionModifyPage";
 import QuestionPage from "@Pages/QuestionPage";
+import SettingsPage from "@Pages/SettingsPage";
 import { useTheme } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
 import AppDialog from "@Core/AppDialog";
@@ -29,6 +30,7 @@ const App: React.FC = () => {
         <main className={styles.content}>
           <Switch>
             <Route exact path="/" component={HomePage} />
+            <PrivateRoute exact path="/settings" component={SettingsPage} />
             <PrivateRoute exact path="/profile/:id" component={ProfilePage} />
             <PrivateRoute
               exact

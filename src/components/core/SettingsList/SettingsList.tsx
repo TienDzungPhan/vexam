@@ -12,12 +12,14 @@ import LanguageIcon from "@material-ui/icons/Language";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 // import UserAvatar from "@Core/UserAvatar";
 import { logOut } from "@Config/auth";
+import { IUser } from "@Models/User";
 
 interface IProps {
+  userData: IUser | null;
   closeSettings: () => void;
 }
 
-const SettingsList: React.FC<IProps> = ({ closeSettings }) => {
+const SettingsList: React.FC<IProps> = ({ userData, closeSettings }) => {
   const handleLogOut = async () => {
     closeSettings();
     try {
@@ -33,7 +35,7 @@ const SettingsList: React.FC<IProps> = ({ closeSettings }) => {
         <ListItem
           button
           component={RouterLink}
-          to="/profile/1"
+          to={`/profile/${userData?.id}`}
           onClick={closeSettings}
         >
           <ListItemIcon>
