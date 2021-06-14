@@ -25,7 +25,10 @@ const Description: React.FC<IProps> = ({ variant, question }) => {
     <>
       <CardHeader
         avatar={
-          <UserAvatar size={variant === "detailed" ? "medium" : "small"} />
+          <UserAvatar
+            name={question?.author.name || ""}
+            size={variant === "detailed" ? "medium" : "small"}
+          />
         }
         action={
           variant === "detailed" ? (

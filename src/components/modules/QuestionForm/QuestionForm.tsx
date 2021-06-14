@@ -54,8 +54,8 @@ const QuestionForm: React.FC = () => {
   };
   return (
     <div>
-      <Grid container spacing={3}>
-        <Grid item sm={6}>
+      <Grid container spacing={3} justify="center">
+        <Grid item md={6}>
           <TextField
             id="exam-select"
             select
@@ -75,7 +75,7 @@ const QuestionForm: React.FC = () => {
             ))}
           </TextField>
         </Grid>
-        <Grid item sm={6}>
+        <Grid item md={6}>
           <TextField
             id="category-select"
             select

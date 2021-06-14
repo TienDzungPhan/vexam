@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from "react";
-import { Link as RouterLink, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   Button,
   Card,
@@ -82,6 +82,9 @@ const FormActions: React.FC = () => {
       console.log(error);
     }
   };
+  const handleCancel = () => {
+    history.goBack();
+  };
   return (
     <Card>
       <CardHeader title="Post" />
@@ -100,9 +103,7 @@ const FormActions: React.FC = () => {
         </TextField>
       </CardContent>
       <CardActions className={styles.actions}>
-        <Button component={RouterLink} to="/">
-          Cancel
-        </Button>
+        <Button onClick={handleCancel}>Cancel</Button>
         {questionId && (
           <Button
             variant="contained"

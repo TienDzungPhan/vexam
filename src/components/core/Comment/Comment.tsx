@@ -33,7 +33,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
         className={clsx(isReply && styles.reply)}
       >
         <ListItemAvatar className={styles.avatarWrapper}>
-          <UserAvatar size={isReply ? "small" : "medium"} />
+          <UserAvatar name="D" size={isReply ? "small" : "medium"} />
         </ListItemAvatar>
         <ListItemText
           primary={
