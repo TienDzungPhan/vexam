@@ -69,7 +69,7 @@ const QuestionPage: React.FC = () => {
           </div>
           {answered && (
             <>
-              <CommentForm />
+              <CommentForm question={question} />
               <Comments question={question} />
             </>
           )}

@@ -45,7 +45,7 @@ const Description: React.FC<IProps> = ({ variant, question }) => {
               <Link
                 color="inherit"
                 component={RouterLink}
-                to={`/profile/${question?.author.id}`}
+                to={`/profile/${question?.author.id || ""}`}
               >
                 {question?.author.name}
               </Link>

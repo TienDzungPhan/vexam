@@ -1,13 +1,15 @@
+import firebase from "@Config/firebase";
+
 export interface IComment {
   id: string;
-  parent?: string;
-  author: string;
-  // author: {
-  //   id: string;
-  //   name: string;
-  //   avatarUrl: string;
-  // };
+  question: { id: string };
+  parent: { id: string } | null;
+  author: {
+    id: string;
+    name: string;
+  };
+  likesCount: number;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: firebase.firestore.Timestamp;
+  updatedAt: firebase.firestore.Timestamp;
 }

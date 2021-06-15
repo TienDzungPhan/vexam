@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme: Theme) =>
     reply: {
       paddingLeft: theme.spacing(6),
     },
+    showReplyButton: {
+      justifyContent: "flex-start",
+    },
   })
 );
 
