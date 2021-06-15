@@ -20,8 +20,14 @@ import UserAvatar from "@Core/UserAvatar";
 import { timePast } from "@Helpers/time";
 import CommentList from "@Core/CommentList";
 import CommentForm from "@Modules/CommentForm";
+import { IQuestion } from "@Models/Question";
 import commentsDB, { getComments } from "@Services/Comment";
 import useStyles from "./Comment.styles";
+
+interface IProps {
+  comment: IComment;
+  question: IQuestion | null;
+}
 
 const Comment: React.FC<IProps> = ({ comment, question }) => {
   const styles = useStyles();

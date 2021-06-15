@@ -22,11 +22,13 @@ const CommentForm: React.FC<IProps> = ({
   const { userData } = useContext(AuthContext);
   const [comment, setComment] = useState("");
   const commentData = useMemo(() => {
+    // Use the root comment as the parent of the comment
+    const rootParent = (parent?.parent ? parent.parent : parent) || null;
     const data = {
       question: { id: question?.id || "" },
       author: { id: userData?.id || "", name: userData?.name || "" },
       content: comment,
-      parent: parent ? { id: parent.id } : null,
+      parent: rootParent,
     };
     return data;
   }, [comment, parent, question, userData]);
