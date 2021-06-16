@@ -45,9 +45,9 @@ export const useQuestionSubscription = (
 
 export const useQuestionQuerySubscription = (
   ref: firebase.firestore.Query
-): [IQuestion[] | null, firebase.firestore.FirestoreError | null] => {
+): [IQuestion[], firebase.firestore.FirestoreError | null] => {
   const [latestData, error] = useQuerySubscription(ref);
-  const querySnapshot = latestData as IQuestion[] | null;
+  const querySnapshot = latestData as unknown as IQuestion[];
   return [querySnapshot, error];
 };
 
