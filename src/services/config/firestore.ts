@@ -36,7 +36,7 @@ export const useDocumentSubscription = (
   useEffect(() => {
     const unsubscribe = ref.onSnapshot(
       (doc) => {
-        setLatestData({ doc: doc.id, ...doc.data() });
+        setLatestData({ id: doc.id, ...doc.data() });
       },
       (err) => setError(err)
     );
@@ -51,19 +51,15 @@ export const useDocumentSubscription = (
 
 export const useQuerySubscription = (
   ref: firebase.firestore.Query
-): [
-  Record<string, unknown>[] | null,
-  firebase.firestore.FirestoreError | null
-] => {
-  const [latestData, setLatestData] =
-    useState<Record<string, unknown>[] | null>(null);
+): [Record<string, unknown>[], firebase.firestore.FirestoreError | null] => {
+  const [latestData, setLatestData] = useState<Record<string, unknown>[]>([]);
   const [error, setError] =
     useState<firebase.firestore.FirestoreError | null>(null);
   useEffect(() => {
     const unsubscribe = ref.onSnapshot(
       (snapshot) => {
         const data: Record<string, unknown>[] = [];
-        snapshot.forEach((doc) => data.push({ doc: doc.id, ...doc.data() }));
+        snapshot.forEach((doc) => data.push({ id: doc.id, ...doc.data() }));
         setLatestData(data);
       },
       (err) => setError(err)

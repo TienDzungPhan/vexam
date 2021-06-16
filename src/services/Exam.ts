@@ -31,9 +31,9 @@ export const useExamSubscription = (
 
 export const useExamQuerySubscription = (
   ref: firebase.firestore.Query
-): [IExam[] | null, firebase.firestore.FirestoreError | null] => {
+): [IExam[], firebase.firestore.FirestoreError | null] => {
   const [latestData, error] = useQuerySubscription(ref);
-  const querySnapshot = latestData as IExam[] | null;
+  const querySnapshot = latestData as unknown as IExam[];
   return [querySnapshot, error];
 };
 

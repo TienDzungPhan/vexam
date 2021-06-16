@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import { createStyles, makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     avatarWrapper: {
       display: "flex",
@@ -8,9 +8,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       display: "block",
-    },
-    reply: {
-      paddingLeft: theme.spacing(6),
     },
     showReplyButton: {
       justifyContent: "flex-start",

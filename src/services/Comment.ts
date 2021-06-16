@@ -37,9 +37,9 @@ export const useCommentSubscription = (
 
 export const useCommentQuerySubscription = (
   ref: firebase.firestore.Query
-): [IComment[] | null, firebase.firestore.FirestoreError | null] => {
+): [IComment[], firebase.firestore.FirestoreError | null] => {
   const [latestData, error] = useQuerySubscription(ref);
-  const querySnapshot = latestData as IComment[] | null;
+  const querySnapshot = latestData as unknown as IComment[];
   return [querySnapshot, error];
 };
 

@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import clsx from "clsx";
+import React, { useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { IComment } from "@Models/Comment";
 import {
@@ -18,10 +16,9 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import UserAvatar from "@Core/UserAvatar";
 import { timePast } from "@Helpers/time";
-import CommentList from "@Core/CommentList";
 import CommentForm from "@Modules/CommentForm";
 import { IQuestion } from "@Models/Question";
-import commentsDB, { getComments } from "@Services/Comment";
+import Replies from "@Modules/Replies";
 import useStyles from "./Comment.styles";
 
 interface IProps {
@@ -32,7 +29,6 @@ interface IProps {
 const Comment: React.FC<IProps> = ({ comment, question }) => {
   const styles = useStyles();
   const isReply = useMemo(() => Boolean(comment?.parent), [comment]);
-  const [replies, setReplies] = useState<IComment[]>([]);
   const [repliesOpened, setRepliesOpened] = useState(false);
   const [replyFormOpened, setReplyFormOpened] = useState(false);
   const handleRepliesToggle = () => {
@@ -44,28 +40,9 @@ const Comment: React.FC<IProps> = ({ comment, question }) => {
   const handleReplyFormClose = () => {
     setReplyFormOpened(false);
   };
-  const loadReplies = useCallback(async () => {
-    if (comment && repliesOpened) {
-      try {
-        const data = await getComments(
-          commentsDB.where("parent.id", "==", comment.id)
-        );
-        setReplies(data);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      }
-    }
-  }, [comment, repliesOpened]);
-  useEffect(() => {
-    loadReplies();
-  }, [loadReplies]);
   return (
     <>
-      <ListItem
-        alignItems="flex-start"
-        className={clsx(isReply && styles.reply)}
-      >
+      <ListItem alignItems="flex-start">
         <ListItemAvatar className={styles.avatarWrapper}>
           <UserAvatar
             name={comment?.author.name}
@@ -140,7 +117,7 @@ const Comment: React.FC<IProps> = ({ comment, question }) => {
         />
       </ListItem>
       {!isReply && repliesOpened && (
-        <CommentList question={question} comments={replies} />
+        <Replies question={question} parent={comment} />
       )}
     </>
   );
