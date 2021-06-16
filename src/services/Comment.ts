@@ -57,15 +57,15 @@ export const createNewComment = async (
   return newCommentRef;
 };
 
-// export const updateComment = async (
-//   id: string,
-//   data: Omit<TCommentData, "author">
-// ): Promise<void> => {
-//   await commentsDB.doc(id).update({
-//     ...data,
-//     updatedAt: Timestamp.fromDate(new Date()),
-//   });
-// };
+export const updateComment = async (
+  id: string,
+  data: Pick<TCommentData, "content">
+): Promise<void> => {
+  await commentsDB.doc(id).update({
+    ...data,
+    updatedAt: Timestamp.fromDate(new Date()),
+  });
+};
 
 export const deleteComment = async (id: string): Promise<void> => {
   await commentsDB.doc(id).delete();

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { IComment } from "@Models/Comment";
 import {
@@ -9,7 +9,8 @@ import {
   ListItemText,
   Typography,
 } from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -19,6 +20,8 @@ import { timePast } from "@Helpers/time";
 import CommentForm from "@Modules/CommentForm";
 import { IQuestion } from "@Models/Question";
 import Replies from "@Modules/Replies";
+import { AuthContext } from "@Contexts/AuthContext";
+import { deleteComment } from "@Services/Comment";
 import useStyles from "./Comment.styles";
 
 interface IProps {
@@ -28,9 +31,15 @@ interface IProps {
 
 const Comment: React.FC<IProps> = ({ comment, question }) => {
   const styles = useStyles();
+  const { userData } = useContext(AuthContext);
+  const isAuthor = useMemo(
+    () => userData?.id === comment?.author.id,
+    [userData, comment]
+  );
   const isReply = useMemo(() => Boolean(comment?.parent), [comment]);
   const [repliesOpened, setRepliesOpened] = useState(false);
   const [replyFormOpened, setReplyFormOpened] = useState(false);
+  const [commentToEdit, setCommentToEdit] = useState<IComment | null>(null);
   const handleRepliesToggle = () => {
     setRepliesOpened(!repliesOpened);
   };
@@ -39,6 +48,18 @@ const Comment: React.FC<IProps> = ({ comment, question }) => {
   };
   const handleReplyFormClose = () => {
     setReplyFormOpened(false);
+  };
+  const handleCommentEdit = () => {
+    setCommentToEdit(comment);
+    handleReplyFormOpen();
+  };
+  const handleCommentDelete = async () => {
+    try {
+      await deleteComment(comment.id);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   };
   return (
     <>
@@ -87,11 +108,27 @@ const Comment: React.FC<IProps> = ({ comment, question }) => {
               >
                 Reply
               </Button>
-              <Button startIcon={<MoreVertIcon />} size="small">
-                More
-              </Button>
+              {isAuthor && (
+                <>
+                  <Button
+                    startIcon={<EditIcon />}
+                    size="small"
+                    onClick={handleCommentEdit}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    startIcon={<DeleteIcon />}
+                    size="small"
+                    onClick={handleCommentDelete}
+                  >
+                    Delete
+                  </Button>
+                </>
+              )}
               {replyFormOpened && (
                 <CommentForm
+                  comment={commentToEdit}
                   question={question}
                   parent={comment}
                   handleFormHide={handleReplyFormClose}

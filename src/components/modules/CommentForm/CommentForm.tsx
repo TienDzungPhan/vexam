@@ -1,18 +1,23 @@
-import React, { useContext, useMemo, useState } from "react";
-import { Button, InputAdornment, TextField } from "@material-ui/core";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { IconButton, InputAdornment, TextField } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import SendIcon from "@material-ui/icons/Send";
+import SaveIcon from "@material-ui/icons/Save";
 import { IQuestion } from "@Models/Question";
 import { AuthContext } from "@Contexts/AuthContext";
 import { IComment } from "@Models/Comment";
-import { createNewComment } from "@Services/Comment";
+import { createNewComment, updateComment } from "@Services/Comment";
 import useStyles from "./CommentForm.styles";
 
 interface IProps {
+  comment?: IComment | null;
   question: IQuestion | null;
   parent?: IComment;
   handleFormHide?: () => void;
 }
 
 const CommentForm: React.FC<IProps> = ({
+  comment,
   question,
   parent,
   handleFormHide,
@@ -20,57 +25,80 @@ const CommentForm: React.FC<IProps> = ({
   const styles = useStyles();
   const isReply = useMemo(() => Boolean(parent), [parent]);
   const { userData } = useContext(AuthContext);
-  const [comment, setComment] = useState("");
+  const [content, setContent] = useState("");
   const commentData = useMemo(() => {
     // Use the root comment as the parent of the comment
     const rootParent = (parent?.parent ? parent.parent : parent) || null;
     const data = {
       question: { id: question?.id || "" },
       author: { id: userData?.id || "", name: userData?.name || "" },
-      content: comment,
+      content,
       parent: rootParent,
     };
     return data;
-  }, [comment, parent, question, userData]);
-  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(e.target.value);
+  }, [content, parent, question, userData]);
+  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
   };
   const handleCommentCreate = async () => {
     try {
       await createNewComment(commentData);
-      setComment("");
+      setContent("");
       if (isReply && handleFormHide) handleFormHide();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
   };
+  const handleCommentUpdate = async () => {
+    if (comment) {
+      try {
+        await updateComment(comment.id, { content });
+        setContent("");
+        if (handleFormHide) handleFormHide();
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+    }
+  };
+  useEffect(() => {
+    if (comment) {
+      setContent(comment.content);
+    }
+  }, [comment]);
   return (
     <TextField
       className={styles.commentInput}
       id="comment-input"
-      label={`Comment as ${userData?.name}`}
+      label={`${isReply ? "Reply" : "Comment"} as ${userData?.name}`}
       variant="outlined"
       fullWidth
       multiline
       size={isReply ? "small" : "medium"}
-      value={comment}
-      onChange={handleCommentChange}
-      placeholder="What do you think about this question?"
+      value={content}
+      onChange={handleContentChange}
+      placeholder={isReply ? "" : "What do you think about this question?"}
       InputProps={{
+        // startAdornment: (
+        //   <InputAdornment position="start">
+        //     {parent && `@${parent.author.name}`}
+        //   </InputAdornment>
+        // ),
         endAdornment: (
           <InputAdornment position="end">
             {isReply && (
-              <Button size="small" onClick={handleFormHide}>
-                Cancel
-              </Button>
+              <IconButton size="small" onClick={handleFormHide}>
+                <CloseIcon />
+              </IconButton>
             )}
-            <Button
+            <IconButton
               size={isReply ? "small" : "medium"}
-              onClick={handleCommentCreate}
+              onClick={comment ? handleCommentUpdate : handleCommentCreate}
+              disabled={!content}
             >
-              Post
-            </Button>
+              {comment ? <SaveIcon /> : <SendIcon />}
+            </IconButton>
           </InputAdornment>
         ),
       }}
