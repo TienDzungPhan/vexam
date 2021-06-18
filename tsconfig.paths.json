@@ -14,7 +14,9 @@
       "@Hooks/*": ["./hooks/*"],
       "@Models/*": ["./models/*"],
       "@Services/*": ["./services/*"],
-      "@Config/*": ["./services/config/*"]
+      "@Config/*": ["./services/config/*"],
+      "@App/*": ["./app/*"],
+      "@Reducers/*": ["./reducers/*"]
     }
   }
 }
