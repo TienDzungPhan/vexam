@@ -16,7 +16,8 @@ import useStyles from "./QuestionPage.styles";
 
 const QuestionPage: React.FC = () => {
   const styles = useStyles();
-  const { id } = useParams<{ id: string }>();
+  const { id, option: optionParam } =
+    useParams<{ id: string; option: string }>();
   const { authenticated } = useContext(AuthContext);
   const { handleDialogOpen } = useContext(DialogContext);
   const [question, setQuestion] = useState<IQuestion | null>(null);
@@ -43,7 +44,11 @@ const QuestionPage: React.FC = () => {
   }, [loadQuestion]);
   useEffect(() => {
     if (!authenticated) setAnswered(false);
-  }, [authenticated]);
+    else if (optionParam) {
+      setSelectedContent(optionParam);
+      setAnswered(true);
+    }
+  }, [authenticated, optionParam]);
   return (
     <TwoSectionsLayout
       nofixed

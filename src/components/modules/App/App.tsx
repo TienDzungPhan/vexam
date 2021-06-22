@@ -37,7 +37,11 @@ const App: React.FC = () => {
               path="/questions/create"
               component={QuestionModifyPage}
             />
-            <Route exact path="/questions/:id" component={QuestionPage} />
+            <Route
+              exact
+              path="/questions/:id/:option?"
+              component={QuestionPage}
+            />
             <Route
               exact
               path="/questions/:id/update"

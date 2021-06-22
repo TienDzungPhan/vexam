@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import firebase from "./firebase";
 
 const db = firebase.firestore();
@@ -55,8 +55,14 @@ export const useQuerySubscription = (
   const [latestData, setLatestData] = useState<Record<string, unknown>[]>([]);
   const [error, setError] =
     useState<firebase.firestore.FirestoreError | null>(null);
+  // Firestore Query will always be a new object reference, causing infinite
+  // loop within useEffect.
+  // Use useRef to store previous value and later use Query.isEqual to compare
+  const prevQuery = useRef(ref);
   useEffect(() => {
-    const unsubscribe = ref.onSnapshot(
+    if (ref.isEqual(prevQuery.current)) return () => {};
+    prevQuery.current = ref;
+    return ref.onSnapshot(
       (snapshot) => {
         const data: Record<string, unknown>[] = [];
         snapshot.forEach((doc) => data.push({ id: doc.id, ...doc.data() }));
@@ -64,12 +70,7 @@ export const useQuerySubscription = (
       },
       (err) => setError(err)
     );
-    return () => {
-      unsubscribe();
-    };
-    // Adding ref to the deps array will make the hooks keep on re-rendering
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [ref]);
   return [latestData, error];
 };
 
