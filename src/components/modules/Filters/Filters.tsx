@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { getExams } from "@Services/Exam";
 import { IExam, TCategory } from "@Models/Exam";
-import { TFilters } from "@Reducers/homeData";
+import { TFilters } from "@Models/Question";
 import useStyles from "./Filters.styles";
 
 interface IProps {

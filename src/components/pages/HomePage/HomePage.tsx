@@ -18,9 +18,9 @@ import {
   storeFilters,
   storePosition,
   storeQuestions,
-  TFilters,
 } from "@Reducers/homeData";
 import { Button } from "@material-ui/core";
+import { TFilters } from "@Models/Question";
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
@@ -37,8 +37,6 @@ const HomePage: React.FC = () => {
       if (examId) questionsRef = questionsRef.where("exam.id", "==", examId);
       if (categories.length > 0)
         questionsRef = questionsRef.where("category", "in", categories);
-      // eslint-disable-next-line no-console
-      console.log(questionsRef);
       const questionsData = await getQuestions(questionsRef);
       setQuestions(questionsData);
       dispatch(storeQuestions(questionsData));

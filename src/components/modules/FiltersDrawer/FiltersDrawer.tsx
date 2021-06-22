@@ -10,7 +10,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import SortIcon from "@material-ui/icons/Sort";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Filters from "@Modules/Filters";
-import { TFilters } from "@Reducers/homeData";
+import { TFilters } from "@Models/Question";
 import useStyles from "./FiltersDrawer.styles";
 
 interface IProps {

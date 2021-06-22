@@ -1,12 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@App/store";
-import { IQuestion } from "@Models/Question";
+import { IQuestion, TFilters } from "@Models/Question";
 // import { IExam, TCategory } from "@Models/Exam";
 
-export type TFilters = {
-  examId: string;
-  categories: string[];
-};
 export interface IHomeDataState {
   questions: IQuestion[] | null;
   position: [number, number];

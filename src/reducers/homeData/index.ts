@@ -1,4 +1,4 @@
-export type { IHomeDataState, TFilters } from "./homeData";
+export type { IHomeDataState } from "./homeData";
 export {
   homeDataSlice,
   storeQuestions,

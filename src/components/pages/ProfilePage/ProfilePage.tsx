@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { useParams } from "react-router-dom";
 import ThreeSectionsLayout from "@Layouts/ThreeSectionsLayout";
-import { IQuestion } from "@Models/Question";
+import { IQuestion, TFilters } from "@Models/Question";
 import Biography from "@Modules/Biography";
 import Filters from "@Modules/Filters";
 import Question from "@Modules/Question";
@@ -32,6 +32,10 @@ const ProfilePage: React.FC = () => {
     () => userId === currentUserData?.id,
     [currentUserData, userId]
   );
+  const [filters, setFilters] = useState<TFilters>({
+    examId: "",
+    categories: [],
+  });
   const loadUserData = useCallback(async () => {
     try {
       const data = await getUserById(userId);
@@ -43,15 +47,21 @@ const ProfilePage: React.FC = () => {
   }, [userId]);
   const loadQuestions = useCallback(async () => {
     try {
-      const questionsData = await getQuestions(
-        questionsDB.where("author.id", "==", userId)
-      );
+      const { examId, categories } = filters;
+      let questionsRef = questionsDB.where("author.id", "==", userId);
+      if (examId) questionsRef = questionsRef.where("exam.id", "==", examId);
+      if (categories.length > 0)
+        questionsRef = questionsRef.where("category", "in", categories);
+      const questionsData = await getQuestions(questionsRef);
       setQuestions(questionsData);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
-  }, [userId]);
+  }, [userId, filters]);
+  const handleFiltersChange = (fltrs: TFilters) => {
+    setFilters(fltrs);
+  };
   useEffect(() => {
     loadQuestions();
   }, [loadQuestions]);
@@ -64,14 +74,21 @@ const ProfilePage: React.FC = () => {
   }, [currentUserData, isCurrentUser, loadUserData]);
   return (
     <>
-      {/* {!isDesktop && <FiltersDrawer />} */}
+      {!isDesktop && (
+        <FiltersDrawer
+          filters={filters}
+          handleFiltersChange={handleFiltersChange}
+        />
+      )}
       <ThreeSectionsLayout
         headline={
           <UserHeadline isCurrentUser={isCurrentUser} userData={userData} />
         }
         left={
-          // <Filters />
-          <></>
+          <Filters
+            filters={filters}
+            handleFiltersChange={handleFiltersChange}
+          />
         }
         main={
           <>
