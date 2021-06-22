@@ -1,91 +1,81 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Checkbox,
+  Radio,
   Divider,
   FormControl,
   FormControlLabel,
   FormGroup,
+  RadioGroup,
   FormLabel,
   Typography,
 } from "@material-ui/core";
-import examsDB from "@Services/Exam";
-import {
-  IExam,
-  // TCategory
-} from "@Models/Exam";
+import { getExams } from "@Services/Exam";
+import { IExam, TCategory } from "@Models/Exam";
+import { TFilters } from "@Models/Question";
 import useStyles from "./Filters.styles";
-
-interface IExamFilter extends IExam {
-  selected: boolean;
-}
 
 interface IProps {
   variant?: "drawer";
+  filters: TFilters;
+  handleFiltersChange: (filters: TFilters) => void;
 }
 
-// interface ICategoryFilter extends TCategory {
-//   selected: boolean;
-// }
+interface ICategoryOption {
+  category: TCategory;
+  selected: boolean;
+}
 
-const Filters: React.FC<IProps> = ({ variant }) => {
+const Filters: React.FC<IProps> = ({
+  variant,
+  filters,
+  handleFiltersChange,
+}) => {
   const styles = useStyles();
-  const [examFilters, setExamFilters] = useState<IExamFilter[]>();
-  // const [categoryFilters, setCategoryFilters] = useState(
-  //   [] as ICategoryFilter[]
-  // );
+  const [exams, setExams] = useState<IExam[] | null>([]);
+  const [categoryFilters, setCategoryFilters] = useState<ICategoryOption[]>([]);
   const loadExams = useCallback(async () => {
     try {
-      const examsSnapshot = await examsDB.get();
-      const examsData: IExamFilter[] = [];
-      examsSnapshot.forEach((doc) =>
-        examsData.push({
-          id: doc.id,
-          selected: false,
-          ...doc.data(),
-        } as IExamFilter)
-      );
-      setExamFilters(examsData);
+      const data = await getExams();
+      setExams(data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
   }, []);
   const handleExamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name: examId, checked } = e.target;
-    const newExamFilters = examFilters?.map((exam) => {
-      const newExam = exam;
-      if (exam.id === examId) newExam.selected = checked;
-      return newExam;
-    });
-    setExamFilters(newExamFilters);
+    handleFiltersChange({ ...filters, examId: e.target.value });
   };
-  // const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, checked } = e.target;
-  //   const newCategoryFilters = categoryFilters.map((category) => {
-  //     const newCategory = category;
-  //     if (category.name === name) newCategory.selected = checked;
-  //     return newCategory;
-  //   });
-  //   setCategoryFilters(newCategoryFilters);
-  // };
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    const newCategoryFilters = categoryFilters.map(({ category, selected }) => {
+      let currentSelectedState = selected;
+      if (category.name === name) currentSelectedState = checked;
+      return { category, selected: currentSelectedState };
+    });
+    const selectedCategories = newCategoryFilters.filter(
+      ({ selected }) => selected
+    );
+    setCategoryFilters(newCategoryFilters);
+    handleFiltersChange({
+      ...filters,
+      categories: selectedCategories.map(({ category }) => category.name),
+    });
+  };
   useEffect(() => {
     loadExams();
   }, [loadExams]);
-  // useEffect(() => {
-  //   examFilters.forEach((exam) => {
-  //     if (exam.selected) {
-  //       const categories: ICategoryFilter[] = exam.categories.map(
-  //         (category) => {
-  //           return {
-  //             ...category,
-  //             selected: false,
-  //           };
-  //         }
-  //       );
-  //       setCategoryFilters(categories);
-  //     }
-  //   });
-  // }, [examFilters]);
+  useEffect(() => {
+    const selectedExam = exams?.find((exam) => exam.id === filters.examId);
+    const categories = selectedExam?.categories?.map((category) => {
+      const selected = filters.categories.includes(category.name);
+      return {
+        category,
+        selected,
+      };
+    });
+    setCategoryFilters(categories || []);
+  }, [exams, filters]);
   return (
     <div className={styles.filters}>
       {variant === "drawer" && (
@@ -96,33 +86,32 @@ const Filters: React.FC<IProps> = ({ variant }) => {
       )}
       <FormControl component="fieldset" className={styles.formControl}>
         <FormLabel component="legend">Exams</FormLabel>
-        <FormGroup>
-          {examFilters?.map((exam) => (
+        <RadioGroup
+          aria-label="exam"
+          name="exam"
+          value={filters.examId}
+          onChange={handleExamChange}
+        >
+          {exams?.map((exam) => (
             <FormControlLabel
               key={exam.id}
-              control={
-                <Checkbox
-                  color="primary"
-                  checked={exam.selected}
-                  onChange={handleExamChange}
-                  name={exam.id}
-                />
-              }
+              value={exam.id}
+              control={<Radio color="primary" />}
               label={exam.name}
             />
           ))}
-        </FormGroup>
+        </RadioGroup>
       </FormControl>
-      {/* {categoryFilters.length > 0 && (
+      {categoryFilters.length > 0 && (
         <FormControl component="fieldset" className={styles.formControl}>
           <FormLabel component="legend">Categories</FormLabel>
           <FormGroup>
-            {categoryFilters?.map((category) => (
+            {categoryFilters?.map(({ category, selected }) => (
               <FormControlLabel
                 key={category.name}
                 control={
                   <Checkbox
-                    checked={category.selected}
+                    checked={selected}
                     onChange={handleCategoryChange}
                     name={category.name}
                   />
@@ -132,7 +121,7 @@ const Filters: React.FC<IProps> = ({ variant }) => {
             ))}
           </FormGroup>
         </FormControl>
-      )} */}
+      )}
     </div>
   );
 };

@@ -24,3 +24,8 @@ export interface IQuestion {
   createdAt: firebase.firestore.Timestamp;
   updatedAt: firebase.firestore.Timestamp;
 }
+
+export type TFilters = {
+  examId: string;
+  categories: string[];
+};

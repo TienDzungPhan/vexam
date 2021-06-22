@@ -7,6 +7,8 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@material-ui/core/styles";
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "@App/store";
 import DialogProvider from "@Contexts/DialogContext";
 import AuthProvider from "@Contexts/AuthContext";
 import reportWebVitals from "./reportWebVitals";
@@ -22,11 +24,13 @@ const theme = responsiveFontSizes(
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <DialogProvider>
-          <App />
-        </DialogProvider>
-      </AuthProvider>
+      <ReduxProvider store={store}>
+        <AuthProvider>
+          <DialogProvider>
+            <App />
+          </DialogProvider>
+        </AuthProvider>
+      </ReduxProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")

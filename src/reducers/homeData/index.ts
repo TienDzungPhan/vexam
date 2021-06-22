@@ -1,0 +1,11 @@
+export type { IHomeDataState } from "./homeData";
+export {
+  homeDataSlice,
+  storeQuestions,
+  storePosition,
+  storeFilters,
+  selectQuestions,
+  selectPosition,
+  selectFilters,
+  default,
+} from "./homeData";
