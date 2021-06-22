@@ -13,7 +13,11 @@ import homeDataReducer from "@Reducers/homeData";
 export const store = configureStore({
   middleware: getDefaultMiddleware({
     serializableCheck: {
-      ignoredActions: ["homeData/storeQuestions"],
+      ignoredActions: [
+        "homeData/storeQuestions",
+        "homeData/storeFilters",
+        "homeData/storePosition",
+      ],
     },
   }),
   reducer: {

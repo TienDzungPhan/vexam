@@ -64,12 +64,15 @@ const ProfilePage: React.FC = () => {
   }, [currentUserData, isCurrentUser, loadUserData]);
   return (
     <>
-      {!isDesktop && <FiltersDrawer />}
+      {/* {!isDesktop && <FiltersDrawer />} */}
       <ThreeSectionsLayout
         headline={
           <UserHeadline isCurrentUser={isCurrentUser} userData={userData} />
         }
-        left={<Filters />}
+        left={
+          // <Filters />
+          <></>
+        }
         main={
           <>
             {questions?.map((question) => (

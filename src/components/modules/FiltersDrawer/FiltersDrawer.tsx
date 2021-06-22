@@ -10,9 +10,15 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import SortIcon from "@material-ui/icons/Sort";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Filters from "@Modules/Filters";
+import { TFilters } from "@Reducers/homeData";
 import useStyles from "./FiltersDrawer.styles";
 
-const FiltersDrawer: React.FC = () => {
+interface IProps {
+  filters: TFilters;
+  handleFiltersChange: (filters: TFilters) => void;
+}
+
+const FiltersDrawer: React.FC<IProps> = ({ filters, handleFiltersChange }) => {
   const styles = useStyles();
   const trigger = useScrollTrigger();
   const [opened, setOpened] = useState(false);
@@ -47,7 +53,11 @@ const FiltersDrawer: React.FC = () => {
         onClose={handleClose}
         className={styles.leftDrawer}
       >
-        <Filters variant="drawer" />
+        <Filters
+          variant="drawer"
+          filters={filters}
+          handleFiltersChange={handleFiltersChange}
+        />
       </SwipeableDrawer>
     </>
   );
