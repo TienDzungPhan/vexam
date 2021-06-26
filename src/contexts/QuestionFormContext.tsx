@@ -7,6 +7,7 @@ import { getExams } from "@Services/Exam";
 
 interface IQuestionFormContext {
   questionId?: string;
+  question: IQuestion | null;
   exams: IExam[];
   selectedExam: IExam | null;
   selectedCategoryName: string;
@@ -40,7 +41,7 @@ export const QuestionFormContext = createContext({} as IQuestionFormContext);
 
 const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
   const [exams, setExams] = useState<IExam[]>([]);
-  const [question, setQuestion] = useState<IQuestion>();
+  const [question, setQuestion] = useState<IQuestion | null>(null);
   const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
   const [description, setDescription] = useState("");
@@ -145,6 +146,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
       );
       setSelectedCategoryName(question.category);
       setDescription(question.description || "");
+      setTextContent(question.context?.content || "");
       setTitle(question.title);
       setOptions(question.options);
       setExplanation(question.explanation);
@@ -155,6 +157,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
     <QuestionFormContext.Provider
       value={{
         questionId,
+        question,
         exams,
         selectedExam,
         selectedCategoryName,

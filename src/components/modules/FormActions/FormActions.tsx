@@ -16,7 +16,11 @@ import {
   deleteQuestion,
   updateQuestion,
 } from "@Services/Question";
-import { createNewContext, TContextData } from "@Services/Context";
+import {
+  createNewContext,
+  TContextData,
+  updateContext,
+} from "@Services/Context";
 import useStyles from "./FormActions.styles";
 
 const FormActions: React.FC = () => {
@@ -24,6 +28,7 @@ const FormActions: React.FC = () => {
   const history = useHistory();
   const {
     questionId,
+    question,
     selectedExam,
     selectedCategoryName,
     description,
@@ -55,11 +60,6 @@ const FormActions: React.FC = () => {
       explanation,
       visibility,
     };
-    // if (textContent) {
-    //   data = { ...data, context: {
-
-    //   }}
-    // }
     return data;
   }, [
     description,
@@ -98,15 +98,30 @@ const FormActions: React.FC = () => {
       console.log(error);
     }
   }, [contextData, history, questionData, textContent, userData]);
-  const handleQuestionUpdate = async () => {
+  const handleQuestionUpdate = useCallback(async () => {
     try {
-      await updateQuestion(questionId || "", questionData);
+      if (contextData && question?.context) {
+        await updateContext(question.context.id || "", {
+          type: contextData.type,
+          content: contextData.content,
+        } as Omit<TContextData, "exam" | "category">);
+        await updateQuestion(questionId || "", {
+          ...questionData,
+          context: {
+            ...question.context,
+            type: "text",
+            content: textContent,
+          },
+        });
+      } else {
+        await updateQuestion(questionId || "", questionData);
+      }
       history.push(`/questions/${questionId}`);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
-  };
+  }, [contextData, history, question, questionData, questionId, textContent]);
   const handleQuestionDelete = async () => {
     try {
       await deleteQuestion(questionId || "");

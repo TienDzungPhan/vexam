@@ -58,7 +58,7 @@ export const createNewContext = async (
 
 export const updateContext = async (
   id: string,
-  data: TContextData
+  data: Omit<TContextData, "exam" | "category">
 ): Promise<void> => {
   await contextsDB.doc(id).update({
     ...data,
