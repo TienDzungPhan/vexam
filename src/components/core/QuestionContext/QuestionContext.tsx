@@ -14,6 +14,10 @@ interface IProps {
 
 const QuestionContext: React.FC<IProps> = ({ questionContext }) => {
   const [expanded, setExpanded] = useState(false);
+  const isLongContent = useMemo(
+    () => questionContext.content.length > 400,
+    [questionContext]
+  );
   const summary = useMemo(
     () => `${questionContext.content.slice(0, 300)} ...`,
     [questionContext]
@@ -23,34 +27,24 @@ const QuestionContext: React.FC<IProps> = ({ questionContext }) => {
   };
   return (
     <CardContent>
-      {expanded ? (
-        <>
-          <Typography variant="body1" component="span" className="japanese">
-            {questionContext.content}
-          </Typography>
-          <Button
-            startIcon={<ExpandLessIcon />}
-            size="small"
-            color="inherit"
-            onClick={handleExpandToggle}
-          >
-            Less
-          </Button>
-        </>
+      {expanded || !isLongContent ? (
+        <Typography variant="body1" component="span" className="japanese">
+          {questionContext.content}
+        </Typography>
       ) : (
-        <>
-          <Typography variant="body1" component="span" className="japanese">
-            {summary}
-          </Typography>
-          <Button
-            startIcon={<ExpandMoreIcon />}
-            size="small"
-            color="inherit"
-            onClick={handleExpandToggle}
-          >
-            More
-          </Button>
-        </>
+        <Typography variant="body1" component="span" className="japanese">
+          {summary}
+        </Typography>
+      )}
+      {isLongContent && (
+        <Button
+          startIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          size="small"
+          color="inherit"
+          onClick={handleExpandToggle}
+        >
+          {expanded ? "Less" : "More"}
+        </Button>
       )}
     </CardContent>
   );

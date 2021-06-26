@@ -6,6 +6,7 @@ import { getQuestionById } from "@Services/Question";
 import { getExams } from "@Services/Exam";
 
 interface IQuestionFormContext {
+  isCreating: boolean;
   questionId?: string;
   question: IQuestion | null;
   exams: IExam[];
@@ -13,6 +14,7 @@ interface IQuestionFormContext {
   selectedCategoryName: string;
   description: string;
   textContent: string;
+  contextId: string;
   title: string;
   options: TOption[];
   explanation: string;
@@ -20,8 +22,10 @@ interface IQuestionFormContext {
   optionDisabled: (option: TOption) => boolean;
   selectExam: (exam: IExam | null) => void;
   selectCategory: (categoryName: string) => void;
+  handleIsCreatingStateChange: () => void;
   handleDescriptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleTextContentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleContextIdChange: (id: string) => void;
   handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleOptionContentChange: (
     id: string
@@ -31,6 +35,7 @@ interface IQuestionFormContext {
   handleOptionDelete: (id: string) => () => void;
   handleExplanationChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleVisibilityChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  clearQuestionContent: () => void;
 }
 
 interface IProps {
@@ -40,12 +45,14 @@ interface IProps {
 export const QuestionFormContext = createContext({} as IQuestionFormContext);
 
 const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
+  const [isCreating, setIsCreating] = useState(!questionId);
   const [exams, setExams] = useState<IExam[]>([]);
   const [question, setQuestion] = useState<IQuestion | null>(null);
   const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
   const [description, setDescription] = useState("");
   const [textContent, setTextContent] = useState("");
+  const [contextId, setContextId] = useState("");
   const [title, setTitle] = useState("");
   const [options, setOptions] = useState<TOption[]>([
     { id: uuidv4(), content: "", isCorrect: false, selectCount: 0 },
@@ -135,6 +142,20 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
   const handleVisibilityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVisibility(e.target.value as "public" | "private");
   };
+  const handleIsCreatingStateChange = () => {
+    setIsCreating(true);
+  };
+  const handleContextIdChange = (id: string) => {
+    setContextId(id);
+  };
+  const clearQuestionContent = () => {
+    setTitle("");
+    setOptions([
+      { id: uuidv4(), content: "", isCorrect: false, selectCount: 0 },
+      { id: uuidv4(), content: "", isCorrect: false, selectCount: 0 },
+    ]);
+    setExplanation("");
+  };
   useEffect(() => {
     loadExams();
     loadQuestion();
@@ -147,6 +168,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
       setSelectedCategoryName(question.category);
       setDescription(question.description || "");
       setTextContent(question.context?.content || "");
+      setContextId(question.context?.id || "");
       setTitle(question.title);
       setOptions(question.options);
       setExplanation(question.explanation);
@@ -156,6 +178,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
   return (
     <QuestionFormContext.Provider
       value={{
+        isCreating,
         questionId,
         question,
         exams,
@@ -163,6 +186,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
         selectedCategoryName,
         description,
         textContent,
+        contextId,
         title,
         options,
         explanation,
@@ -170,8 +194,10 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
         optionDisabled,
         selectExam,
         selectCategory,
+        handleIsCreatingStateChange,
         handleDescriptionChange,
         handleTextContentChange,
+        handleContextIdChange,
         handleTitleChange,
         handleOptionContentChange,
         handleOptionSelect,
@@ -179,6 +205,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
         handleOptionDelete,
         handleExplanationChange,
         handleVisibilityChange,
+        clearQuestionContent,
       }}
     >
       {children}
