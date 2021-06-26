@@ -5,11 +5,11 @@ const useStyles = makeStyles((theme: Theme) =>
     card: {
       marginTop: theme.spacing(3),
     },
-    input: {
+    text: {
       marginBottom: theme.spacing(2),
     },
-    error: {
-      color: theme.palette.error.main,
+    input: {
+      marginBottom: theme.spacing(2),
     },
   })
 );

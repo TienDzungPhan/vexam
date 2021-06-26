@@ -1,4 +1,5 @@
 import firebase from "@Config/firebase";
+import { IContext } from "./Context";
 import { IExam } from "./Exam";
 import { IUser } from "./User";
 
@@ -20,7 +21,7 @@ export interface IQuestion {
   options: TOption[];
   explanation: string;
   answerCount: number;
-  contextId?: string;
+  context?: Pick<IContext, "id" | "type" | "content">;
   createdAt: firebase.firestore.Timestamp;
   updatedAt: firebase.firestore.Timestamp;
 }

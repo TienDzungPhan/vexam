@@ -11,6 +11,7 @@ interface IQuestionFormContext {
   selectedExam: IExam | null;
   selectedCategoryName: string;
   description: string;
+  textContent: string;
   title: string;
   options: TOption[];
   explanation: string;
@@ -19,6 +20,7 @@ interface IQuestionFormContext {
   selectExam: (exam: IExam | null) => void;
   selectCategory: (categoryName: string) => void;
   handleDescriptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTextContentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleOptionContentChange: (
     id: string
@@ -42,6 +44,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
   const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
   const [description, setDescription] = useState("");
+  const [textContent, setTextContent] = useState("");
   const [title, setTitle] = useState("");
   const [options, setOptions] = useState<TOption[]>([
     { id: uuidv4(), content: "", isCorrect: false, selectCount: 0 },
@@ -77,6 +80,9 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
   };
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
+  };
+  const handleTextContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextContent(e.target.value);
   };
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -153,6 +159,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
         selectedExam,
         selectedCategoryName,
         description,
+        textContent,
         title,
         options,
         explanation,
@@ -161,6 +168,7 @@ const QuestionFormProvider: React.FC<IProps> = ({ children, questionId }) => {
         selectExam,
         selectCategory,
         handleDescriptionChange,
+        handleTextContentChange,
         handleTitleChange,
         handleOptionContentChange,
         handleOptionSelect,

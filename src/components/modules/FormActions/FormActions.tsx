@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Button,
@@ -16,6 +16,7 @@ import {
   deleteQuestion,
   updateQuestion,
 } from "@Services/Question";
+import { createNewContext, TContextData } from "@Services/Context";
 import useStyles from "./FormActions.styles";
 
 const FormActions: React.FC = () => {
@@ -26,6 +27,7 @@ const FormActions: React.FC = () => {
     selectedExam,
     selectedCategoryName,
     description,
+    textContent,
     title,
     options,
     explanation,
@@ -33,8 +35,18 @@ const FormActions: React.FC = () => {
     handleVisibilityChange,
   } = useContext(QuestionFormContext);
   const { userData } = useContext(AuthContext);
+  const contextData = useMemo(() => {
+    return textContent
+      ? {
+          type: "text",
+          exam: { id: selectedExam?.id || "", name: selectedExam?.name || "" },
+          category: selectedCategoryName,
+          content: textContent,
+        }
+      : undefined;
+  }, [selectedCategoryName, selectedExam, textContent]);
   const questionData = useMemo(() => {
-    return {
+    const data = {
       exam: { id: selectedExam?.id || "", name: selectedExam?.name || "" },
       category: selectedCategoryName,
       description,
@@ -43,6 +55,12 @@ const FormActions: React.FC = () => {
       explanation,
       visibility,
     };
+    // if (textContent) {
+    //   data = { ...data, context: {
+
+    //   }}
+    // }
+    return data;
   }, [
     description,
     explanation,
@@ -52,18 +70,34 @@ const FormActions: React.FC = () => {
     title,
     visibility,
   ]);
-  const handleQuestionCreate = async () => {
+  const handleQuestionCreate = useCallback(async () => {
     try {
-      const newQuestionRef = await createNewQuestion({
-        ...questionData,
-        author: { id: userData?.id || "", name: userData?.name || "" },
-      });
-      history.push(`/questions/${newQuestionRef.id}`);
+      if (contextData) {
+        const newContextRef = await createNewContext(
+          contextData as TContextData
+        );
+        const newQuestionRef = await createNewQuestion({
+          ...questionData,
+          context: {
+            id: newContextRef.id,
+            type: "text",
+            content: textContent,
+          },
+          author: { id: userData?.id || "", name: userData?.name || "" },
+        });
+        history.push(`/questions/${newQuestionRef.id}`);
+      } else {
+        const newQuestionRef = await createNewQuestion({
+          ...questionData,
+          author: { id: userData?.id || "", name: userData?.name || "" },
+        });
+        history.push(`/questions/${newQuestionRef.id}`);
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
-  };
+  }, [contextData, history, questionData, textContent, userData]);
   const handleQuestionUpdate = async () => {
     try {
       await updateQuestion(questionId || "", questionData);
