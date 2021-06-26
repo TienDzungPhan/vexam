@@ -18,7 +18,7 @@ type TQuestionData = Pick<
   | "options"
   | "explanation"
   | "visibility"
-  | "contextId"
+  | "context"
 >;
 
 const questionsDB = db.collection("questions");
@@ -67,7 +67,7 @@ export const createNewQuestion = async (
 
 export const updateQuestion = async (
   id: string,
-  data: Omit<TQuestionData, "author">
+  data: Omit<TQuestionData, "author" | "exam" | "category">
 ): Promise<void> => {
   await questionsDB.doc(id).update({
     ...data,

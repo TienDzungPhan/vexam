@@ -39,13 +39,13 @@ const App: React.FC = () => {
             />
             <Route
               exact
-              path="/questions/:id/:option?"
-              component={QuestionPage}
+              path="/questions/:id/update"
+              component={QuestionModifyPage}
             />
             <Route
               exact
-              path="/questions/:id/update"
-              component={QuestionModifyPage}
+              path="/questions/:id/:option?"
+              component={QuestionPage}
             />
           </Switch>
         </main>

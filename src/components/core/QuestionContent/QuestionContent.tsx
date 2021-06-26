@@ -1,7 +1,8 @@
 import React from "react";
-import { IQuestion } from "@Models/Question";
-import Option from "@Core/Option";
 import { Card, CardContent, RadioGroup, Typography } from "@material-ui/core";
+import { IQuestion } from "@Models/Question";
+import QuestionContext from "@Core/QuestionContext";
+import Option from "@Core/Option";
 import useStyles from "./QuestionContent.styles";
 
 interface IProps {
@@ -20,35 +21,40 @@ const Content: React.FC<IProps> = ({
 }) => {
   const styles = useStyles();
   return (
-    <CardContent className={styles.questionContent}>
-      <Typography variant="h6" className="japanese">
-        {question?.title}
-      </Typography>
-      <RadioGroup
-        aria-label="options"
-        name="answer"
-        className={styles.options}
-        value={selectedContent}
-        onChange={handleOptionChange}
-      >
-        {question?.options.map((option) => (
-          <Option
-            key={option.content}
-            option={option}
-            selectedContent={selectedContent}
-            answered={answered}
-          />
-        ))}
-      </RadioGroup>
-      {answered && (
-        <Typography variant="subtitle2" className={styles.explanation}>
-          {question?.explanation}
-        </Typography>
+    <>
+      {question?.context && (
+        <QuestionContext questionContext={question.context} />
       )}
-      {/* <Typography variant="caption">
+      <CardContent className={styles.questionContent}>
+        <Typography variant="h6" className="japanese">
+          {question?.title}
+        </Typography>
+        <RadioGroup
+          aria-label="options"
+          name="answer"
+          className={styles.options}
+          value={selectedContent}
+          onChange={handleOptionChange}
+        >
+          {question?.options.map((option) => (
+            <Option
+              key={option.content}
+              option={option}
+              selectedContent={selectedContent}
+              answered={answered}
+            />
+          ))}
+        </RadioGroup>
+        {answered && (
+          <Typography variant="subtitle2" className={styles.explanation}>
+            {question?.explanation}
+          </Typography>
+        )}
+        {/* <Typography variant="caption">
         99 people attempted this question
       </Typography> */}
-    </CardContent>
+      </CardContent>
+    </>
   );
 };
 
